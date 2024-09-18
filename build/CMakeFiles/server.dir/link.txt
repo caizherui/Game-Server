@@ -1,0 +1,1 @@
+/usr/bin/c++     CMakeFiles/server.dir/main.cpp.o CMakeFiles/server.dir/src/server.cpp.o CMakeFiles/server.dir/src/epoll.cpp.o CMakeFiles/server.dir/src/http_request.cpp.o  -o server -lpthread -lmysqlcppconn -lmysqlclient 

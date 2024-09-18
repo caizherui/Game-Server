@@ -1,0 +1,3 @@
+/home/czr/gameServer/build/CMakeFiles/rebuild_cache.dir
+/home/czr/gameServer/build/CMakeFiles/server.dir
+/home/czr/gameServer/build/CMakeFiles/edit_cache.dir
