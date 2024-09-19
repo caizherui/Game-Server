@@ -11,6 +11,8 @@
 #include <iomanip>
 #include <numeric>
 #include "http_request.h"
+#include "sql_pool.h"
+
 
 template <class T>
 class ThreadPool {
@@ -37,6 +39,10 @@ ThreadPool<T>::ThreadPool(int poolNum) {
     close = 0;
 
     threads.resize(totalNum);
+
+    //  数据库池初始化
+    Sql_pool::init();
+
     for (int i = 0; i < totalNum; i++) {
         threads[i] = std::thread(worker, this);
     }
@@ -83,9 +89,14 @@ void ThreadPool<T>::worker(void* arg) {
         T* task = pool->taskQueue.front();
 
         pool->taskQueue.pop();
+        MYSQL* mysql = NULL;
+        mysql = Sql_pool::GetConnection();
+
         lk.unlock();
 
-        task->process();
+        task->process(mysql);
+
+        Sql_pool::ReleaseConnection(mysql);
     }
 }
 

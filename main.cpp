@@ -2,11 +2,11 @@
 #include "src/server.h"
 #include <iostream>
 #include <vector>
+#include <algorithm>
 
 using namespace std;
 
 int main() {
-
     Server server;
 
     server.eventListen();
@@ -35,6 +35,8 @@ int main() {
     // // 比如std::chrono::seconds
     // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
     // std::cout << "Time to fill and iterate a vector of " << duration.count()  << " ms\n";
+
+
 
     return 0;
 }

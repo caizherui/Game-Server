@@ -62,11 +62,11 @@ void Server::eventLoop() {
                     epoll->add(connfd);
                     https[connfd]->init(connfd, client_address);
                 }
-            } else if (epoll->events[i].events & EPOLLIN) { // http请求
+            } else if (epoll->events[i].events & EPOLLIN) { // http请求 模拟proactor
                 if (https[sockfd]->read()) {
                     pool->append(https[sockfd]);
                 }
-            } else if (epoll->events[i].events & EPOLLOUT) {    //  http响应
+            } else if (epoll->events[i].events & EPOLLOUT) {    //  http响应 模拟proactor
                 https[sockfd]->write();
             }
         }

@@ -21,6 +21,7 @@ void Http_request::init() {
     method = "";
     url = "";
     version = "";
+    path = "",
     start_line = 0;
     check_idx = 0;
     write_idx = 0;
@@ -74,8 +75,8 @@ bool Http_request::write()
     init();
 }
 
-void Http_request::process() {
-    process_read();
+void Http_request::process(MYSQL* mysql) {
+    process_read(mysql);
     process_write();
     modfd(epollfd, fd, EPOLLOUT);
     // bool write_ret = handle_write(read_ret);
@@ -102,43 +103,7 @@ void Http_request::process() {
     // }
 }
 
-void Http_request::process_read() {
-    // LINE_STATUS line_status = LINE_OK;
-    // HTTP_CODE ret = NO_REQUEST;
-    // char *text = 0;
-
-    // while ((check_state == CHECK_STATE_CONTENT && line_status == LINE_OK) || ((line_status = parse_line()) == LINE_OK)) {
-    //     text = get_line();
-    //     start_line = check_idx;
-    //     switch (check_state) {
-    //     case CHECK_STATE_REQUESTLINE: {
-    //         ret = parse_request_line(text);
-    //         if (ret == BAD_REQUEST)
-    //             return BAD_REQUEST;
-    //         break;
-    //     }
-    //     case CHECK_STATE_HEADER: {
-    //         ret = parse_headers(text);
-    //         if (ret == BAD_REQUEST)
-    //             return BAD_REQUEST;
-    //         else if (ret == GET_REQUEST)
-    //         {
-    //             return do_request();
-    //         }
-    //         break;
-    //     }
-    //     // case CHECK_STATE_CONTENT: {
-    //     //     ret = parse_content(text);
-    //     //     if (ret == GET_REQUEST)
-    //     //         return do_request();
-    //     //     line_status = LINE_OPEN;
-    //     //     break;
-    //     // }
-    //     default:
-    //         return INTERNAL_ERROR;
-    //     }
-    // }
-    // return NO_REQUEST;
+void Http_request::process_read(MYSQL *mysql) {
     std::string str(read_buf);
     request_post = std::move(str);
     std::string request_line = request_post.substr(0, request_post.find("\r\n"));
@@ -150,33 +115,74 @@ void Http_request::process_read() {
         url = request_match[2];
         version = request_match[3];
         std::cout << "Method: " << method << std::endl;
-        std::cout << "URI: " << url << std::endl;
+        std::cout << "URL: " << url << std::endl;
         std::cout << "Version: " << version << std::endl;
     } else {
         std::cout << "Invalid request line format." << std::endl;
     }
 
-    // 解析查询参数
+    //  解析查询参数
     size_t query_pos = url.find('?');
+    path = url.substr(1, query_pos);
     std::string query = url.substr(query_pos + 1);
     std::map<std::string, std::string> queryParams = parse_query_params(query);
+    std::cout << "Path: " << path << std::endl;
 
     std::cout << "Query Parameters:" << std::endl;
     for (const auto& param : queryParams) {
         std::cout << param.first << ": " << param.second << std::endl;
     }
+
+    if (path == "getUser?") {    //  获取用户信息
+        // 创建一个 User 消息实例
+        example::User user;
+        user.set_id(14);
+        user.set_name("John Doe");
+        user.add_emails("john.doe@example.com");
+        user.add_emails("jdoe@example.org");
+        // 序列化消息
+        user.SerializeToString(&response_data);
+        std::cout << response_data << std::endl;
+    }
+
+    std::string mysqlquery = "select * from users";
+    mysql_query(mysql, mysqlquery.c_str());
+    MYSQL_RES* res = mysql_store_result(mysql);
+    unsigned int num_fields = mysql_num_fields(res);
+    MYSQL_ROW row;
+
+    while ((row = mysql_fetch_row(res))) {
+        // 处理每一行的数据
+        for (unsigned int i = 0; i < num_fields; ++i) {
+            std::cout << row[i] << " ";
+        }
+        std::cout << std::endl;
+    }
+
+    mysql_free_result(res); // 释放结果集
+
 }
 
 void Http_request::process_write() {
-    // 构建 HTTP 响应头
+    //  构建 HTTP 响应头
     response_post =
         "HTTP/1.1 200 OK\r\n"
         "Server: CustomServer\r\n"
-        "Content-Length: " + std::to_string(strlen("Hello, World!")) + "\r\n" // 计算响应体长度
+        "Content-Length: " + std::to_string(response_data.size()) + "\r\n" // 计算响应体长度
         "Content-Type: text/plain\r\n" // 设置 Content-Type 为 text/plain
         "Connection: close\r\n" // 关闭连接
         "\r\n"
-        "Hello, World!"; // 响应体内容
+        + response_data; // 响应体内容
+    // 构建 HTTP 响应字符串
+    // std::stringstream response_stream;
+
+    // response_post = "HTTP/1.1 200 OK\r\n"
+    //             "Content-Type: application/x-protobuf\r\n"
+    //             "Content-Length: " + response_data.size() + "\r\n"
+    //             "\r\n"
+    //             + response_data; // 发送数据
+
+    // response_post = response_stream.str();
 }
 
 // bool Http_request::afpre() {

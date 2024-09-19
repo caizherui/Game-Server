@@ -28,7 +28,12 @@
 #include <sys/wait.h>
 #include <sys/uio.h>
 #include <map>
+#include <mysql/mysql.h>
+#include <string>
+#include <fstream>
 #include "epoll.h"
+#include "sql_pool.h"
+#include "proto/example.pb.h"
 
 #define READ_BUF_SIZE 2048
 #define WRITE_BUF_SIZE 1024
@@ -64,7 +69,7 @@ public:
     virtual ~Http() {};
     virtual void init() {};
     virtual void init(int, struct sockaddr_in) {};
-    virtual void process() {};
+    virtual void process(MYSQL *) {};
     virtual bool read() {};    //  处理http请求的预处理操作
     virtual bool write() {};    //  处理http响应的后处理操作
 

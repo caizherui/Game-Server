@@ -204,6 +204,33 @@ src/http_request.cpp.s:
 	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/src/http_request.cpp.s
 .PHONY : src/http_request.cpp.s
 
+src/proto/example.pb.o: src/proto/example.pb.cc.o
+
+.PHONY : src/proto/example.pb.o
+
+# target to build an object file
+src/proto/example.pb.cc.o:
+	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/src/proto/example.pb.cc.o
+.PHONY : src/proto/example.pb.cc.o
+
+src/proto/example.pb.i: src/proto/example.pb.cc.i
+
+.PHONY : src/proto/example.pb.i
+
+# target to preprocess a source file
+src/proto/example.pb.cc.i:
+	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/src/proto/example.pb.cc.i
+.PHONY : src/proto/example.pb.cc.i
+
+src/proto/example.pb.s: src/proto/example.pb.cc.s
+
+.PHONY : src/proto/example.pb.s
+
+# target to generate assembly for a file
+src/proto/example.pb.cc.s:
+	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/src/proto/example.pb.cc.s
+.PHONY : src/proto/example.pb.cc.s
+
 src/server.o: src/server.cpp.o
 
 .PHONY : src/server.o
@@ -231,6 +258,33 @@ src/server.cpp.s:
 	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/src/server.cpp.s
 .PHONY : src/server.cpp.s
 
+src/sql_pool.o: src/sql_pool.cpp.o
+
+.PHONY : src/sql_pool.o
+
+# target to build an object file
+src/sql_pool.cpp.o:
+	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/src/sql_pool.cpp.o
+.PHONY : src/sql_pool.cpp.o
+
+src/sql_pool.i: src/sql_pool.cpp.i
+
+.PHONY : src/sql_pool.i
+
+# target to preprocess a source file
+src/sql_pool.cpp.i:
+	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/src/sql_pool.cpp.i
+.PHONY : src/sql_pool.cpp.i
+
+src/sql_pool.s: src/sql_pool.cpp.s
+
+.PHONY : src/sql_pool.s
+
+# target to generate assembly for a file
+src/sql_pool.cpp.s:
+	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/src/sql_pool.cpp.s
+.PHONY : src/sql_pool.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -249,9 +303,15 @@ help:
 	@echo "... src/http_request.o"
 	@echo "... src/http_request.i"
 	@echo "... src/http_request.s"
+	@echo "... src/proto/example.pb.o"
+	@echo "... src/proto/example.pb.i"
+	@echo "... src/proto/example.pb.s"
 	@echo "... src/server.o"
 	@echo "... src/server.i"
 	@echo "... src/server.s"
+	@echo "... src/sql_pool.o"
+	@echo "... src/sql_pool.i"
+	@echo "... src/sql_pool.s"
 .PHONY : help
 
 

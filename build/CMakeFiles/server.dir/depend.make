@@ -5,7 +5,9 @@ CMakeFiles/server.dir/main.cpp.o: ../main.cpp
 CMakeFiles/server.dir/main.cpp.o: ../src/epoll.h
 CMakeFiles/server.dir/main.cpp.o: ../src/http.h
 CMakeFiles/server.dir/main.cpp.o: ../src/http_request.h
+CMakeFiles/server.dir/main.cpp.o: ../src/proto/example.pb.h
 CMakeFiles/server.dir/main.cpp.o: ../src/server.h
+CMakeFiles/server.dir/main.cpp.o: ../src/sql_pool.h
 CMakeFiles/server.dir/main.cpp.o: ../src/threadPool.h
 
 CMakeFiles/server.dir/src/epoll.cpp.o: ../src/epoll.cpp
@@ -15,11 +17,21 @@ CMakeFiles/server.dir/src/http_request.cpp.o: ../src/epoll.h
 CMakeFiles/server.dir/src/http_request.cpp.o: ../src/http.h
 CMakeFiles/server.dir/src/http_request.cpp.o: ../src/http_request.cpp
 CMakeFiles/server.dir/src/http_request.cpp.o: ../src/http_request.h
+CMakeFiles/server.dir/src/http_request.cpp.o: ../src/proto/example.pb.h
+CMakeFiles/server.dir/src/http_request.cpp.o: ../src/sql_pool.h
+
+CMakeFiles/server.dir/src/proto/example.pb.cc.o: ../src/proto/example.pb.cc
+CMakeFiles/server.dir/src/proto/example.pb.cc.o: ../src/proto/example.pb.h
 
 CMakeFiles/server.dir/src/server.cpp.o: ../src/epoll.h
 CMakeFiles/server.dir/src/server.cpp.o: ../src/http.h
 CMakeFiles/server.dir/src/server.cpp.o: ../src/http_request.h
+CMakeFiles/server.dir/src/server.cpp.o: ../src/proto/example.pb.h
 CMakeFiles/server.dir/src/server.cpp.o: ../src/server.cpp
 CMakeFiles/server.dir/src/server.cpp.o: ../src/server.h
+CMakeFiles/server.dir/src/server.cpp.o: ../src/sql_pool.h
 CMakeFiles/server.dir/src/server.cpp.o: ../src/threadPool.h
+
+CMakeFiles/server.dir/src/sql_pool.cpp.o: ../src/sql_pool.cpp
+CMakeFiles/server.dir/src/sql_pool.cpp.o: ../src/sql_pool.h
 
