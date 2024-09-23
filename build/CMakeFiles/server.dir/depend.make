@@ -5,10 +5,21 @@ CMakeFiles/server.dir/main.cpp.o: ../main.cpp
 CMakeFiles/server.dir/main.cpp.o: ../src/epoll.h
 CMakeFiles/server.dir/main.cpp.o: ../src/http.h
 CMakeFiles/server.dir/main.cpp.o: ../src/http_request.h
-CMakeFiles/server.dir/main.cpp.o: ../src/proto/example.pb.h
+CMakeFiles/server.dir/main.cpp.o: ../src/player.h
+CMakeFiles/server.dir/main.cpp.o: ../src/proto/dataParse.pb.h
+CMakeFiles/server.dir/main.cpp.o: ../src/room.h
 CMakeFiles/server.dir/main.cpp.o: ../src/server.h
 CMakeFiles/server.dir/main.cpp.o: ../src/sql_pool.h
 CMakeFiles/server.dir/main.cpp.o: ../src/threadPool.h
+CMakeFiles/server.dir/main.cpp.o: /home/czr/jsonc/jsoncpp/include/json/allocator.h
+CMakeFiles/server.dir/main.cpp.o: /home/czr/jsonc/jsoncpp/include/json/config.h
+CMakeFiles/server.dir/main.cpp.o: /home/czr/jsonc/jsoncpp/include/json/forwards.h
+CMakeFiles/server.dir/main.cpp.o: /home/czr/jsonc/jsoncpp/include/json/json.h
+CMakeFiles/server.dir/main.cpp.o: /home/czr/jsonc/jsoncpp/include/json/json_features.h
+CMakeFiles/server.dir/main.cpp.o: /home/czr/jsonc/jsoncpp/include/json/reader.h
+CMakeFiles/server.dir/main.cpp.o: /home/czr/jsonc/jsoncpp/include/json/value.h
+CMakeFiles/server.dir/main.cpp.o: /home/czr/jsonc/jsoncpp/include/json/version.h
+CMakeFiles/server.dir/main.cpp.o: /home/czr/jsonc/jsoncpp/include/json/writer.h
 
 CMakeFiles/server.dir/src/epoll.cpp.o: ../src/epoll.cpp
 CMakeFiles/server.dir/src/epoll.cpp.o: ../src/epoll.h
@@ -17,20 +28,49 @@ CMakeFiles/server.dir/src/http_request.cpp.o: ../src/epoll.h
 CMakeFiles/server.dir/src/http_request.cpp.o: ../src/http.h
 CMakeFiles/server.dir/src/http_request.cpp.o: ../src/http_request.cpp
 CMakeFiles/server.dir/src/http_request.cpp.o: ../src/http_request.h
-CMakeFiles/server.dir/src/http_request.cpp.o: ../src/proto/example.pb.h
+CMakeFiles/server.dir/src/http_request.cpp.o: ../src/player.h
+CMakeFiles/server.dir/src/http_request.cpp.o: ../src/proto/dataParse.pb.h
+CMakeFiles/server.dir/src/http_request.cpp.o: ../src/room.h
 CMakeFiles/server.dir/src/http_request.cpp.o: ../src/sql_pool.h
+CMakeFiles/server.dir/src/http_request.cpp.o: /home/czr/jsonc/jsoncpp/include/json/allocator.h
+CMakeFiles/server.dir/src/http_request.cpp.o: /home/czr/jsonc/jsoncpp/include/json/config.h
+CMakeFiles/server.dir/src/http_request.cpp.o: /home/czr/jsonc/jsoncpp/include/json/forwards.h
+CMakeFiles/server.dir/src/http_request.cpp.o: /home/czr/jsonc/jsoncpp/include/json/json.h
+CMakeFiles/server.dir/src/http_request.cpp.o: /home/czr/jsonc/jsoncpp/include/json/json_features.h
+CMakeFiles/server.dir/src/http_request.cpp.o: /home/czr/jsonc/jsoncpp/include/json/reader.h
+CMakeFiles/server.dir/src/http_request.cpp.o: /home/czr/jsonc/jsoncpp/include/json/value.h
+CMakeFiles/server.dir/src/http_request.cpp.o: /home/czr/jsonc/jsoncpp/include/json/version.h
+CMakeFiles/server.dir/src/http_request.cpp.o: /home/czr/jsonc/jsoncpp/include/json/writer.h
 
-CMakeFiles/server.dir/src/proto/example.pb.cc.o: ../src/proto/example.pb.cc
-CMakeFiles/server.dir/src/proto/example.pb.cc.o: ../src/proto/example.pb.h
+CMakeFiles/server.dir/src/player.cpp.o: ../src/player.cpp
+CMakeFiles/server.dir/src/player.cpp.o: ../src/player.h
+
+CMakeFiles/server.dir/src/proto/dataParse.pb.cc.o: ../src/proto/dataParse.pb.cc
+CMakeFiles/server.dir/src/proto/dataParse.pb.cc.o: ../src/proto/dataParse.pb.h
+
+CMakeFiles/server.dir/src/room.cpp.o: ../src/player.h
+CMakeFiles/server.dir/src/room.cpp.o: ../src/room.cpp
+CMakeFiles/server.dir/src/room.cpp.o: ../src/room.h
 
 CMakeFiles/server.dir/src/server.cpp.o: ../src/epoll.h
 CMakeFiles/server.dir/src/server.cpp.o: ../src/http.h
 CMakeFiles/server.dir/src/server.cpp.o: ../src/http_request.h
-CMakeFiles/server.dir/src/server.cpp.o: ../src/proto/example.pb.h
+CMakeFiles/server.dir/src/server.cpp.o: ../src/player.h
+CMakeFiles/server.dir/src/server.cpp.o: ../src/proto/dataParse.pb.h
+CMakeFiles/server.dir/src/server.cpp.o: ../src/room.h
 CMakeFiles/server.dir/src/server.cpp.o: ../src/server.cpp
 CMakeFiles/server.dir/src/server.cpp.o: ../src/server.h
 CMakeFiles/server.dir/src/server.cpp.o: ../src/sql_pool.h
 CMakeFiles/server.dir/src/server.cpp.o: ../src/threadPool.h
+CMakeFiles/server.dir/src/server.cpp.o: /home/czr/jsonc/jsoncpp/include/json/allocator.h
+CMakeFiles/server.dir/src/server.cpp.o: /home/czr/jsonc/jsoncpp/include/json/config.h
+CMakeFiles/server.dir/src/server.cpp.o: /home/czr/jsonc/jsoncpp/include/json/forwards.h
+CMakeFiles/server.dir/src/server.cpp.o: /home/czr/jsonc/jsoncpp/include/json/json.h
+CMakeFiles/server.dir/src/server.cpp.o: /home/czr/jsonc/jsoncpp/include/json/json_features.h
+CMakeFiles/server.dir/src/server.cpp.o: /home/czr/jsonc/jsoncpp/include/json/reader.h
+CMakeFiles/server.dir/src/server.cpp.o: /home/czr/jsonc/jsoncpp/include/json/value.h
+CMakeFiles/server.dir/src/server.cpp.o: /home/czr/jsonc/jsoncpp/include/json/version.h
+CMakeFiles/server.dir/src/server.cpp.o: /home/czr/jsonc/jsoncpp/include/json/writer.h
 
 CMakeFiles/server.dir/src/sql_pool.cpp.o: ../src/sql_pool.cpp
 CMakeFiles/server.dir/src/sql_pool.cpp.o: ../src/sql_pool.h

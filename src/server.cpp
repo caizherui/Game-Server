@@ -1,5 +1,13 @@
 #include "server.h"
 
+std::unordered_set<std::string> Http::users;
+std::queue<std::string> Http::waitQueue;
+std::mutex Http::mutexWait;
+int Http::roomId = 0;
+std::mutex Http::mutexRoom;
+std::unordered_map<std::string, int> Http::userRoomMap;  // 用户和房间之间的关系
+std::vector<Room *> Room::roomLists;
+
 Server::Server() {
     epoll = new Epoll();
     for (int i = 0; i < MAX_FD; i++) {
@@ -44,6 +52,10 @@ void Server::eventListen() {
 
 void Server::eventLoop() {
     while (1) {
+        for (auto &it: Http::users) {
+            std::cout << it << std::endl;
+        }
+
         // 监听event内核事件表
         int num = epoll_wait(epoll->epollfd, epoll->events, MAX_EVENT_NUM, -1);
 

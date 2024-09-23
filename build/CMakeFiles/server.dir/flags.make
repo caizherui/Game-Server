@@ -6,5 +6,5 @@ CXX_FLAGS =   -std=gnu++1z
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/czr/gameServer/build -I/home/czr/gameServer -I/home/czr/gameServer/./src -I/home/czr/gameServer/./src/proto 
+CXX_INCLUDES = -I/home/czr/gameServer/build -I/home/czr/gameServer -I/home/czr/gameServer/./src -I/home/czr/gameServer/./src/proto -I/home/czr/jsonc/jsoncpp/include 
 

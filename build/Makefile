@@ -204,32 +204,86 @@ src/http_request.cpp.s:
 	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/src/http_request.cpp.s
 .PHONY : src/http_request.cpp.s
 
-src/proto/example.pb.o: src/proto/example.pb.cc.o
+src/player.o: src/player.cpp.o
 
-.PHONY : src/proto/example.pb.o
+.PHONY : src/player.o
 
 # target to build an object file
-src/proto/example.pb.cc.o:
-	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/src/proto/example.pb.cc.o
-.PHONY : src/proto/example.pb.cc.o
+src/player.cpp.o:
+	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/src/player.cpp.o
+.PHONY : src/player.cpp.o
 
-src/proto/example.pb.i: src/proto/example.pb.cc.i
+src/player.i: src/player.cpp.i
 
-.PHONY : src/proto/example.pb.i
+.PHONY : src/player.i
 
 # target to preprocess a source file
-src/proto/example.pb.cc.i:
-	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/src/proto/example.pb.cc.i
-.PHONY : src/proto/example.pb.cc.i
+src/player.cpp.i:
+	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/src/player.cpp.i
+.PHONY : src/player.cpp.i
 
-src/proto/example.pb.s: src/proto/example.pb.cc.s
+src/player.s: src/player.cpp.s
 
-.PHONY : src/proto/example.pb.s
+.PHONY : src/player.s
 
 # target to generate assembly for a file
-src/proto/example.pb.cc.s:
-	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/src/proto/example.pb.cc.s
-.PHONY : src/proto/example.pb.cc.s
+src/player.cpp.s:
+	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/src/player.cpp.s
+.PHONY : src/player.cpp.s
+
+src/proto/dataParse.pb.o: src/proto/dataParse.pb.cc.o
+
+.PHONY : src/proto/dataParse.pb.o
+
+# target to build an object file
+src/proto/dataParse.pb.cc.o:
+	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/src/proto/dataParse.pb.cc.o
+.PHONY : src/proto/dataParse.pb.cc.o
+
+src/proto/dataParse.pb.i: src/proto/dataParse.pb.cc.i
+
+.PHONY : src/proto/dataParse.pb.i
+
+# target to preprocess a source file
+src/proto/dataParse.pb.cc.i:
+	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/src/proto/dataParse.pb.cc.i
+.PHONY : src/proto/dataParse.pb.cc.i
+
+src/proto/dataParse.pb.s: src/proto/dataParse.pb.cc.s
+
+.PHONY : src/proto/dataParse.pb.s
+
+# target to generate assembly for a file
+src/proto/dataParse.pb.cc.s:
+	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/src/proto/dataParse.pb.cc.s
+.PHONY : src/proto/dataParse.pb.cc.s
+
+src/room.o: src/room.cpp.o
+
+.PHONY : src/room.o
+
+# target to build an object file
+src/room.cpp.o:
+	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/src/room.cpp.o
+.PHONY : src/room.cpp.o
+
+src/room.i: src/room.cpp.i
+
+.PHONY : src/room.i
+
+# target to preprocess a source file
+src/room.cpp.i:
+	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/src/room.cpp.i
+.PHONY : src/room.cpp.i
+
+src/room.s: src/room.cpp.s
+
+.PHONY : src/room.s
+
+# target to generate assembly for a file
+src/room.cpp.s:
+	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/src/room.cpp.s
+.PHONY : src/room.cpp.s
 
 src/server.o: src/server.cpp.o
 
@@ -303,9 +357,15 @@ help:
 	@echo "... src/http_request.o"
 	@echo "... src/http_request.i"
 	@echo "... src/http_request.s"
-	@echo "... src/proto/example.pb.o"
-	@echo "... src/proto/example.pb.i"
-	@echo "... src/proto/example.pb.s"
+	@echo "... src/player.o"
+	@echo "... src/player.i"
+	@echo "... src/player.s"
+	@echo "... src/proto/dataParse.pb.o"
+	@echo "... src/proto/dataParse.pb.i"
+	@echo "... src/proto/dataParse.pb.s"
+	@echo "... src/room.o"
+	@echo "... src/room.i"
+	@echo "... src/room.s"
 	@echo "... src/server.o"
 	@echo "... src/server.i"
 	@echo "... src/server.s"

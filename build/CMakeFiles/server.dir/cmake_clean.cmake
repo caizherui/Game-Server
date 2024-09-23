@@ -1,10 +1,12 @@
 file(REMOVE_RECURSE
   "CMakeFiles/server.dir/main.cpp.o"
-  "CMakeFiles/server.dir/src/proto/example.pb.cc.o"
+  "CMakeFiles/server.dir/src/proto/dataParse.pb.cc.o"
   "CMakeFiles/server.dir/src/server.cpp.o"
   "CMakeFiles/server.dir/src/epoll.cpp.o"
   "CMakeFiles/server.dir/src/http_request.cpp.o"
   "CMakeFiles/server.dir/src/sql_pool.cpp.o"
+  "CMakeFiles/server.dir/src/room.cpp.o"
+  "CMakeFiles/server.dir/src/player.cpp.o"
   "server.pdb"
   "server"
 )

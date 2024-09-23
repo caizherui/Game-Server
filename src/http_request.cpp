@@ -10,7 +10,6 @@ const std::string error_404_form = "The requested file was not found on this ser
 const std::string error_500_title = "Internal Error";
 const std::string error_500_form = "There was an unusual problem serving the request file.\n";
 
-
 void Http_request::init() {
     read_idx = 0;
     content_length = 0;
@@ -106,7 +105,8 @@ void Http_request::process(MYSQL* mysql) {
 void Http_request::process_read(MYSQL *mysql) {
     std::string str(read_buf);
     request_post = std::move(str);
-    std::string request_line = request_post.substr(0, request_post.find("\r\n"));
+    size_t first_newline = request_post.find("\r\n");
+    std::string request_line = request_post.substr(0, first_newline);
     std::regex request_pattern(R"(^(GET|POST)\s+([^ \r\n]+)\s+HTTP/(\d\.\d)$)");
     std::smatch request_match;
 
@@ -121,45 +121,160 @@ void Http_request::process_read(MYSQL *mysql) {
         std::cout << "Invalid request line format." << std::endl;
     }
 
+    std::string request_json;
+
+    if (method == "POST") {
+        // 提取请求体部分
+        std::string headers_end = "\r\n\r\n";
+        size_t headers_end_pos = request_post.find(headers_end);
+        request_json = request_post.substr(headers_end_pos + headers_end.length(), request_post.size()-headers_end_pos + headers_end.length());
+    }
+
     //  解析查询参数
     size_t query_pos = url.find('?');
     path = url.substr(1, query_pos);
-    std::string query = url.substr(query_pos + 1);
-    std::map<std::string, std::string> queryParams = parse_query_params(query);
-    std::cout << "Path: " << path << std::endl;
-
-    std::cout << "Query Parameters:" << std::endl;
-    for (const auto& param : queryParams) {
-        std::cout << param.first << ": " << param.second << std::endl;
-    }
 
     if (path == "getUser?") {    //  获取用户信息
-        // 创建一个 User 消息实例
-        example::User user;
-        user.set_id(14);
-        user.set_name("John Doe");
-        user.add_emails("john.doe@example.com");
-        user.add_emails("jdoe@example.org");
-        // 序列化消息
-        user.SerializeToString(&response_data);
-        std::cout << response_data << std::endl;
-    }
+        std::string query = url.substr(query_pos + 1);
+        std::map<std::string, std::string> queryParams = parse_query_params(query);
 
-    std::string mysqlquery = "select * from users";
-    mysql_query(mysql, mysqlquery.c_str());
-    MYSQL_RES* res = mysql_store_result(mysql);
-    unsigned int num_fields = mysql_num_fields(res);
-    MYSQL_ROW row;
+        std::string username = queryParams["username"];
+        std::string password = queryParams["password"];
 
-    while ((row = mysql_fetch_row(res))) {
-        // 处理每一行的数据
-        for (unsigned int i = 0; i < num_fields; ++i) {
-            std::cout << row[i] << " ";
+
+        std::string mysqlquery = "select * from users where username = '" + username + "' and password = '" + password + "'";
+        mysql_query(mysql, mysqlquery.c_str());
+        MYSQL_RES* res = mysql_store_result(mysql);
+        unsigned int num_fields = mysql_num_fields(res);
+        MYSQL_ROW row;
+
+        
+        row = mysql_fetch_row(res);
+        dataParse::User user;
+        if (row) {
+            user.set_id(row[0]);
+            user.set_name(row[1]);
+            Http::users.insert(row[0]);
+        } else {
+            std::string mysqlquery = "INSERT INTO users (username, password) VALUES ('" + username + "', '" + password + "')";
+            mysql_query(mysql, mysqlquery.c_str());
+            unsigned long lastInsertId = mysql_insert_id(mysql);
+            user.set_id(std::to_string(lastInsertId));
+            user.set_name(username);
+            Http::users.insert(std::to_string(lastInsertId));
         }
-        std::cout << std::endl;
-    }
+        user.SerializeToString(&response_data);
+        mysql_free_result(res); // 释放结果集
+    } else if (path == "waitExp?") {    //  等待历练
+        std::string query = url.substr(query_pos + 1);
+        std::map<std::string, std::string> queryParams = parse_query_params(query);
 
-    mysql_free_result(res); // 释放结果集
+        std::string id = queryParams["userid"];
+
+        std::unique_lock<std::mutex> lk(Http::mutexWait);
+        std::unique_lock<std::mutex> lkR(Http::mutexRoom);
+        Http::waitQueue.push(id);
+        if (Http::waitQueue.size() == 2) {
+            Room* room = new Room();
+            for (int i = 0; i < 2; i++) {
+                std::string tmp = Http::waitQueue.front();
+                Http::waitQueue.pop();
+                Player* player = new Player(tmp);
+                room->add(player);
+                Http::userRoomMap[tmp] = Http::roomId;
+            }
+            Room::roomLists.push_back(room);
+            Http::roomId++;
+            //  方案一：C++服务器进行客户端广播，发送消息
+            //  方案二：C++客户端向服务器发起轮询定时请求
+        }
+        response_data = "add wait queue";
+
+        lk.unlock();
+        lkR.unlock();
+
+    } else if (path == "askStart?") {    // 询问是否可以开始历练  
+        std::string query = url.substr(query_pos + 1);
+        std::map<std::string, std::string> queryParams = parse_query_params(query);
+
+        std::string id = queryParams["userid"];
+
+        if(Http::userRoomMap.find(id) != userRoomMap.end()) {
+            response_data = "true";
+        } else {
+            response_data = "false";
+        }
+    } else if (path == "updatePlayer/post") {    // 用户购买技能之后的状态，提交给C++服务器 
+        // 解析 JSON 字符串
+        Json::Value root;
+        Json::Reader reader;
+        bool parsingSuccessful = reader.parse(request_json, root);
+
+        if (!parsingSuccessful) {
+            std::cout << "Failed to parse JSON." << std::endl;
+        }
+
+        // 提取数据
+        const Json::Value& skillIDsValue = root["skillIDs"];
+        int level = root["level"].asInt();
+        int maxHealth = root["maxHealth"].asInt();
+        int expNums = root["expNums"].asInt();
+        int gold = root["gold"].asInt();
+
+        // 输出数据
+        std::cout << "Skill IDs: ";
+        for (const auto& id : skillIDsValue) {
+            std::cout << id.asInt() << " ";
+        }
+
+        std::cout << "Level: " << level << std::endl;
+        std::cout << "Max Health: " << maxHealth << std::endl;
+        std::cout << "Experience Numbers: " << expNums << std::endl;
+        std::cout << "Gold: " << gold << std::endl;
+        // std::string query = url.substr(query_pos + 1);
+        // std::map<std::string, std::string> queryParams = parse_query_params(query);
+
+        // std::string id = queryParams["userid"];
+
+        // if(Http::userRoomMap.find(id) != userRoomMap.end()) {
+        //     response_data = "true";
+        // } else {
+        //     response_data = "false";
+        // }
+    } else if (path == "batRes?") {    // 战斗结果
+        std::string query = url.substr(query_pos + 1);
+        std::map<std::string, std::string> queryParams = parse_query_params(query);
+
+        std::string id = queryParams["userid"];
+
+        if(Http::userRoomMap.find(id) != userRoomMap.end()) {
+            response_data = "true";
+        } else {
+            response_data = "false";
+        }
+    } else if (path == "updateState?") {    // 更新状态
+        std::string query = url.substr(query_pos + 1);
+        std::map<std::string, std::string> queryParams = parse_query_params(query);
+
+        std::string id = queryParams["userid"];
+
+        if(Http::userRoomMap.find(id) != userRoomMap.end()) {
+            response_data = "true";
+        } else {
+            response_data = "false";
+        }
+    } else if (path == "disOppo?") {    // 分配对手
+        std::string query = url.substr(query_pos + 1);
+        std::map<std::string, std::string> queryParams = parse_query_params(query);
+
+        std::string id = queryParams["userid"];
+
+        if(Http::userRoomMap.find(id) != userRoomMap.end()) {
+            response_data = "true";
+        } else {
+            response_data = "false";
+        }
+    }
 
 }
 
@@ -170,7 +285,7 @@ void Http_request::process_write() {
         "Server: CustomServer\r\n"
         "Content-Length: " + std::to_string(response_data.size()) + "\r\n" // 计算响应体长度
         "Content-Type: text/plain\r\n" // 设置 Content-Type 为 text/plain
-        "Connection: close\r\n" // 关闭连接
+        "Connection: keep-alive\r\n" // 关闭连接
         "\r\n"
         + response_data; // 响应体内容
     // 构建 HTTP 响应字符串
