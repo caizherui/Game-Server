@@ -155,6 +155,14 @@ player.h
 /home/czr/gameServer/src/player.h
 string
 -
+list
+-
+iostream
+-
+condition_variable
+-
+mutex
+-
 
 /home/czr/gameServer/src/proto/dataParse.pb.cc
 dataParse.pb.h
@@ -212,6 +220,12 @@ player.h
 list
 -
 vector
+-
+unordered_map
+-
+random
+-
+algorithm
 -
 
 /home/czr/gameServer/src/server.cpp

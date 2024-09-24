@@ -95,7 +95,7 @@ public:
     static std::mutex mutexWait;   //  等待队列的锁
     static std::mutex mutexRoom;   //  对局房间的锁
     static int roomId; // 房间的id号
-    static std::unordered_map<std::string, int> userRoomMap;  // 用户和房间之间的关系
+    static std::unordered_map<std::string, int> userRoomMap;  // 用户id和房间之间的关系
 
 };
 

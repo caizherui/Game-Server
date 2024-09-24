@@ -169,7 +169,7 @@ void Http_request::process_read(MYSQL *mysql) {
         std::string query = url.substr(query_pos + 1);
         std::map<std::string, std::string> queryParams = parse_query_params(query);
 
-        std::string id = queryParams["userid"];
+        std::string id = queryParams["userId"];
 
         std::unique_lock<std::mutex> lk(Http::mutexWait);
         std::unique_lock<std::mutex> lkR(Http::mutexRoom);
@@ -197,14 +197,19 @@ void Http_request::process_read(MYSQL *mysql) {
         std::string query = url.substr(query_pos + 1);
         std::map<std::string, std::string> queryParams = parse_query_params(query);
 
-        std::string id = queryParams["userid"];
+        std::string id = queryParams["userId"];
 
-        if(Http::userRoomMap.find(id) != userRoomMap.end()) {
+        if(Http::userRoomMap.find(id) != Http::userRoomMap.end()) {
             response_data = "true";
         } else {
             response_data = "false";
         }
-    } else if (path == "updatePlayer/post") {    // 用户购买技能之后的状态，提交给C++服务器 
+    } else if (path == "updatePlayer?") {    // 用户购买技能之后的状态，提交给C++服务器 
+        std::string query = url.substr(query_pos + 1);
+        std::map<std::string, std::string> queryParams = parse_query_params(query);
+
+        std::string userId = queryParams["userId"];
+
         // 解析 JSON 字符串
         Json::Value root;
         Json::Reader reader;
@@ -221,16 +226,21 @@ void Http_request::process_read(MYSQL *mysql) {
         int expNums = root["expNums"].asInt();
         int gold = root["gold"].asInt();
 
+        std::list<int> skillIds;
         // 输出数据
         std::cout << "Skill IDs: ";
         for (const auto& id : skillIDsValue) {
-            std::cout << id.asInt() << " ";
+            skillIds.push_back(id.asInt());
         }
 
         std::cout << "Level: " << level << std::endl;
         std::cout << "Max Health: " << maxHealth << std::endl;
         std::cout << "Experience Numbers: " << expNums << std::endl;
         std::cout << "Gold: " << gold << std::endl;
+
+        Room::roomLists[Http::userRoomMap[userId]]->updatePlayer(userId, std::move(skillIds), maxHealth, expNums);
+        // Room::roomLists[Http::userRoomMap[userId]]->playerMap[userId]->setInfo(std::move(skillIds), maxHealth);
+
         // std::string query = url.substr(query_pos + 1);
         // std::map<std::string, std::string> queryParams = parse_query_params(query);
 
@@ -245,7 +255,7 @@ void Http_request::process_read(MYSQL *mysql) {
         std::string query = url.substr(query_pos + 1);
         std::map<std::string, std::string> queryParams = parse_query_params(query);
 
-        std::string id = queryParams["userid"];
+        std::string id = queryParams["userId"];
 
         if(Http::userRoomMap.find(id) != userRoomMap.end()) {
             response_data = "true";
@@ -256,7 +266,7 @@ void Http_request::process_read(MYSQL *mysql) {
         std::string query = url.substr(query_pos + 1);
         std::map<std::string, std::string> queryParams = parse_query_params(query);
 
-        std::string id = queryParams["userid"];
+        std::string id = queryParams["userId"];
 
         if(Http::userRoomMap.find(id) != userRoomMap.end()) {
             response_data = "true";
@@ -267,7 +277,7 @@ void Http_request::process_read(MYSQL *mysql) {
         std::string query = url.substr(query_pos + 1);
         std::map<std::string, std::string> queryParams = parse_query_params(query);
 
-        std::string id = queryParams["userid"];
+        std::string id = queryParams["userId"];
 
         if(Http::userRoomMap.find(id) != userRoomMap.end()) {
             response_data = "true";
