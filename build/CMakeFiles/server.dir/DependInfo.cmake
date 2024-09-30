@@ -5,12 +5,14 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
   "/home/czr/gameServer/main.cpp" "/home/czr/gameServer/build/CMakeFiles/server.dir/main.cpp.o"
+  "/home/czr/gameServer/src/battle.cpp" "/home/czr/gameServer/build/CMakeFiles/server.dir/src/battle.cpp.o"
   "/home/czr/gameServer/src/epoll.cpp" "/home/czr/gameServer/build/CMakeFiles/server.dir/src/epoll.cpp.o"
   "/home/czr/gameServer/src/http_request.cpp" "/home/czr/gameServer/build/CMakeFiles/server.dir/src/http_request.cpp.o"
   "/home/czr/gameServer/src/player.cpp" "/home/czr/gameServer/build/CMakeFiles/server.dir/src/player.cpp.o"
   "/home/czr/gameServer/src/proto/dataParse.pb.cc" "/home/czr/gameServer/build/CMakeFiles/server.dir/src/proto/dataParse.pb.cc.o"
   "/home/czr/gameServer/src/room.cpp" "/home/czr/gameServer/build/CMakeFiles/server.dir/src/room.cpp.o"
   "/home/czr/gameServer/src/server.cpp" "/home/czr/gameServer/build/CMakeFiles/server.dir/src/server.cpp.o"
+  "/home/czr/gameServer/src/skill.cpp" "/home/czr/gameServer/build/CMakeFiles/server.dir/src/skill.cpp.o"
   "/home/czr/gameServer/src/sql_pool.cpp" "/home/czr/gameServer/build/CMakeFiles/server.dir/src/sql_pool.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")

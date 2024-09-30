@@ -3,6 +3,9 @@
 
 #include "http.h"
 
+#define DECODE_STRING "258EAFA5-E914-47DA-95CA-C5AB0DC85B11"
+#define WEBSOCKET_KEY "Sec-WebSocket-Key"
+
 class Http_request : public Http{
 public:
     Http_request() {};
@@ -48,6 +51,9 @@ private:
     int start_line;
     int content_length;
     Http::CHECK_STATE check_state;
+    bool sseTag = false; // 判断是否是SSE连接，若是SSE连接，执行SSE线程
+    bool webTag = false;
+    std::string bas64;
 
 };
 

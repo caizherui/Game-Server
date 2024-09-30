@@ -36,6 +36,7 @@ void protobuf_AddDesc_dataParse_2eproto();
 void protobuf_AssignDesc_dataParse_2eproto();
 void protobuf_ShutdownFile_dataParse_2eproto();
 
+class Oppo;
 class User;
 
 // ===================================================================
@@ -137,6 +138,102 @@ class User : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
   void InitAsDefaultInstance();
   static User* default_instance_;
 };
+// -------------------------------------------------------------------
+
+class Oppo : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:dataParse.Oppo) */ {
+ public:
+  Oppo();
+  virtual ~Oppo();
+
+  Oppo(const Oppo& from);
+
+  inline Oppo& operator=(const Oppo& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const Oppo& default_instance();
+
+  void Swap(Oppo* other);
+
+  // implements Message ----------------------------------------------
+
+  inline Oppo* New() const { return New(NULL); }
+
+  Oppo* New(::google::protobuf::Arena* arena) const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const Oppo& from);
+  void MergeFrom(const Oppo& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const {
+    return InternalSerializeWithCachedSizesToArray(false, output);
+  }
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  void InternalSwap(Oppo* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return _internal_metadata_.arena();
+  }
+  inline void* MaybeArenaPtr() const {
+    return _internal_metadata_.raw_arena_ptr();
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // repeated int32 skillIds = 1;
+  int skillids_size() const;
+  void clear_skillids();
+  static const int kSkillIdsFieldNumber = 1;
+  ::google::protobuf::int32 skillids(int index) const;
+  void set_skillids(int index, ::google::protobuf::int32 value);
+  void add_skillids(::google::protobuf::int32 value);
+  const ::google::protobuf::RepeatedField< ::google::protobuf::int32 >&
+      skillids() const;
+  ::google::protobuf::RepeatedField< ::google::protobuf::int32 >*
+      mutable_skillids();
+
+  // optional int32 maxHealth = 2;
+  void clear_maxhealth();
+  static const int kMaxHealthFieldNumber = 2;
+  ::google::protobuf::int32 maxhealth() const;
+  void set_maxhealth(::google::protobuf::int32 value);
+
+  // @@protoc_insertion_point(class_scope:dataParse.Oppo)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  bool _is_default_instance_;
+  ::google::protobuf::RepeatedField< ::google::protobuf::int32 > skillids_;
+  mutable int _skillids_cached_byte_size_;
+  ::google::protobuf::int32 maxhealth_;
+  mutable int _cached_size_;
+  friend void  protobuf_AddDesc_dataParse_2eproto();
+  friend void protobuf_AssignDesc_dataParse_2eproto();
+  friend void protobuf_ShutdownFile_dataParse_2eproto();
+
+  void InitAsDefaultInstance();
+  static Oppo* default_instance_;
+};
 // ===================================================================
 
 
@@ -233,7 +330,57 @@ inline void User::set_allocated_name(::std::string* name) {
   // @@protoc_insertion_point(field_set_allocated:dataParse.User.name)
 }
 
+// -------------------------------------------------------------------
+
+// Oppo
+
+// repeated int32 skillIds = 1;
+inline int Oppo::skillids_size() const {
+  return skillids_.size();
+}
+inline void Oppo::clear_skillids() {
+  skillids_.Clear();
+}
+inline ::google::protobuf::int32 Oppo::skillids(int index) const {
+  // @@protoc_insertion_point(field_get:dataParse.Oppo.skillIds)
+  return skillids_.Get(index);
+}
+inline void Oppo::set_skillids(int index, ::google::protobuf::int32 value) {
+  skillids_.Set(index, value);
+  // @@protoc_insertion_point(field_set:dataParse.Oppo.skillIds)
+}
+inline void Oppo::add_skillids(::google::protobuf::int32 value) {
+  skillids_.Add(value);
+  // @@protoc_insertion_point(field_add:dataParse.Oppo.skillIds)
+}
+inline const ::google::protobuf::RepeatedField< ::google::protobuf::int32 >&
+Oppo::skillids() const {
+  // @@protoc_insertion_point(field_list:dataParse.Oppo.skillIds)
+  return skillids_;
+}
+inline ::google::protobuf::RepeatedField< ::google::protobuf::int32 >*
+Oppo::mutable_skillids() {
+  // @@protoc_insertion_point(field_mutable_list:dataParse.Oppo.skillIds)
+  return &skillids_;
+}
+
+// optional int32 maxHealth = 2;
+inline void Oppo::clear_maxhealth() {
+  maxhealth_ = 0;
+}
+inline ::google::protobuf::int32 Oppo::maxhealth() const {
+  // @@protoc_insertion_point(field_get:dataParse.Oppo.maxHealth)
+  return maxhealth_;
+}
+inline void Oppo::set_maxhealth(::google::protobuf::int32 value) {
+  
+  maxhealth_ = value;
+  // @@protoc_insertion_point(field_set:dataParse.Oppo.maxHealth)
+}
+
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
 
 // @@protoc_insertion_point(namespace_scope)
 

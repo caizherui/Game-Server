@@ -4,6 +4,7 @@
 #include <vector>
 #include "http.h"
 #include "threadPool.h"
+#include "sse.h"
 
 class Server {
 public:
@@ -20,6 +21,8 @@ public:
 private:
     int listenfd;   //   监听套接字
     int port = 9010;   // 端口号
+
+    // Sse* sse;   //  事件推送机制
 
 
 };

@@ -7,6 +7,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/server.dir/src/sql_pool.cpp.o"
   "CMakeFiles/server.dir/src/room.cpp.o"
   "CMakeFiles/server.dir/src/player.cpp.o"
+  "CMakeFiles/server.dir/src/battle.cpp.o"
+  "CMakeFiles/server.dir/src/skill.cpp.o"
   "server.pdb"
   "server"
 )

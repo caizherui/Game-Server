@@ -38,15 +38,35 @@
 #include <unordered_map>
 #include <queue>
 #include <list>
+#include <iostream>
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <sys/select.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <openssl/sha.h>
+#include <openssl/pem.h>
+#include <openssl/bio.h>
+#include <openssl/evp.h>
+#include <unistd.h>
+#include <string.h>
+#include <queue>
+#include <mutex>
+#include <thread>
+#include <atomic>
 #include "epoll.h"
 #include "sql_pool.h"
 #include "room.h"
 #include "proto/dataParse.pb.h"
+// #include "sse.h"
 
 #define READ_BUF_SIZE 2048
 #define WRITE_BUF_SIZE 1024
 #define MAX_FD 65536
 #define FILENAME_LEN 200
+#define SHA1_LEN      20
+
+typedef unsigned char uchar;
 
 class Http {
 public:

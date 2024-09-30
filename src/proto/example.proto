@@ -7,3 +7,8 @@ message User {
   string name = 2;
   repeated string emails = 3;
 }
+
+message Oppo {
+    repeated int skillIds = 1;
+    int32 maxHealth = 2;
+}

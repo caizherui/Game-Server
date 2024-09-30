@@ -10,6 +10,8 @@ std::vector<Room *> Room::roomLists;
 
 Server::Server() {
     epoll = new Epoll();
+    // sse = Sse::GetInstance();
+    // sse->event_bind();
     for (int i = 0; i < MAX_FD; i++) {
         https[i] = new Http_request();
     }
@@ -48,6 +50,27 @@ void Server::eventListen() {
     //  被动监听模式
     listen(listenfd, 5);
     epoll->add(listenfd, false);
+
+    // //  网络编程基础步骤
+    // ssefd = socket(PF_INET, SOCK_STREAM, 0);
+
+    // //  等待一段时间后，再关闭套接字
+    // struct linger tmp = {1, 1};
+    // setsockopt(ssefd, SOL_SOCKET, SO_LINGER, &tmp, sizeof(tmp));
+
+    // struct sockaddr_in address;
+    // memset(&address, 0, sizeof(address));
+    // address.sin_family = AF_INET;
+    // address.sin_addr.s_addr = htonl(INADDR_ANY);
+    // address.sin_port = htons(port);
+
+    // int flag = 1;
+    // //  地址重用
+    // setsockopt(listenfd, SOL_SOCKET, SO_REUSEADDR, &flag, sizeof(flag));
+    // //  绑定ip地址和端口号
+    // bind(listenfd, (struct sockaddr *)&address, sizeof(address));
+    // //  被动监听模式
+    // listen(listenfd, 5);
 }
 
 void Server::eventLoop() {
@@ -55,6 +78,7 @@ void Server::eventLoop() {
         for (auto &it: Http::users) {
             std::cout << it << std::endl;
         }
+        std::cout << "开始监听事件" << std::endl;
 
         // 监听event内核事件表
         int num = epoll_wait(epoll->epollfd, epoll->events, MAX_EVENT_NUM, -1);

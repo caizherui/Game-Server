@@ -150,6 +150,33 @@ main.cpp.s:
 	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/main.cpp.s
 .PHONY : main.cpp.s
 
+src/battle.o: src/battle.cpp.o
+
+.PHONY : src/battle.o
+
+# target to build an object file
+src/battle.cpp.o:
+	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/src/battle.cpp.o
+.PHONY : src/battle.cpp.o
+
+src/battle.i: src/battle.cpp.i
+
+.PHONY : src/battle.i
+
+# target to preprocess a source file
+src/battle.cpp.i:
+	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/src/battle.cpp.i
+.PHONY : src/battle.cpp.i
+
+src/battle.s: src/battle.cpp.s
+
+.PHONY : src/battle.s
+
+# target to generate assembly for a file
+src/battle.cpp.s:
+	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/src/battle.cpp.s
+.PHONY : src/battle.cpp.s
+
 src/epoll.o: src/epoll.cpp.o
 
 .PHONY : src/epoll.o
@@ -312,6 +339,33 @@ src/server.cpp.s:
 	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/src/server.cpp.s
 .PHONY : src/server.cpp.s
 
+src/skill.o: src/skill.cpp.o
+
+.PHONY : src/skill.o
+
+# target to build an object file
+src/skill.cpp.o:
+	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/src/skill.cpp.o
+.PHONY : src/skill.cpp.o
+
+src/skill.i: src/skill.cpp.i
+
+.PHONY : src/skill.i
+
+# target to preprocess a source file
+src/skill.cpp.i:
+	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/src/skill.cpp.i
+.PHONY : src/skill.cpp.i
+
+src/skill.s: src/skill.cpp.s
+
+.PHONY : src/skill.s
+
+# target to generate assembly for a file
+src/skill.cpp.s:
+	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/src/skill.cpp.s
+.PHONY : src/skill.cpp.s
+
 src/sql_pool.o: src/sql_pool.cpp.o
 
 .PHONY : src/sql_pool.o
@@ -351,6 +405,9 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... src/battle.o"
+	@echo "... src/battle.i"
+	@echo "... src/battle.s"
 	@echo "... src/epoll.o"
 	@echo "... src/epoll.i"
 	@echo "... src/epoll.s"
@@ -369,6 +426,9 @@ help:
 	@echo "... src/server.o"
 	@echo "... src/server.i"
 	@echo "... src/server.s"
+	@echo "... src/skill.o"
+	@echo "... src/skill.i"
+	@echo "... src/skill.s"
 	@echo "... src/sql_pool.o"
 	@echo "... src/sql_pool.i"
 	@echo "... src/sql_pool.s"

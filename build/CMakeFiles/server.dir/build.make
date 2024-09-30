@@ -249,6 +249,54 @@ CMakeFiles/server.dir/src/player.cpp.o.provides: CMakeFiles/server.dir/src/playe
 CMakeFiles/server.dir/src/player.cpp.o.provides.build: CMakeFiles/server.dir/src/player.cpp.o
 
 
+CMakeFiles/server.dir/src/battle.cpp.o: CMakeFiles/server.dir/flags.make
+CMakeFiles/server.dir/src/battle.cpp.o: ../src/battle.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/czr/gameServer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/server.dir/src/battle.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/server.dir/src/battle.cpp.o -c /home/czr/gameServer/src/battle.cpp
+
+CMakeFiles/server.dir/src/battle.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/server.dir/src/battle.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/czr/gameServer/src/battle.cpp > CMakeFiles/server.dir/src/battle.cpp.i
+
+CMakeFiles/server.dir/src/battle.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/server.dir/src/battle.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/czr/gameServer/src/battle.cpp -o CMakeFiles/server.dir/src/battle.cpp.s
+
+CMakeFiles/server.dir/src/battle.cpp.o.requires:
+
+.PHONY : CMakeFiles/server.dir/src/battle.cpp.o.requires
+
+CMakeFiles/server.dir/src/battle.cpp.o.provides: CMakeFiles/server.dir/src/battle.cpp.o.requires
+	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/src/battle.cpp.o.provides.build
+.PHONY : CMakeFiles/server.dir/src/battle.cpp.o.provides
+
+CMakeFiles/server.dir/src/battle.cpp.o.provides.build: CMakeFiles/server.dir/src/battle.cpp.o
+
+
+CMakeFiles/server.dir/src/skill.cpp.o: CMakeFiles/server.dir/flags.make
+CMakeFiles/server.dir/src/skill.cpp.o: ../src/skill.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/czr/gameServer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/server.dir/src/skill.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/server.dir/src/skill.cpp.o -c /home/czr/gameServer/src/skill.cpp
+
+CMakeFiles/server.dir/src/skill.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/server.dir/src/skill.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/czr/gameServer/src/skill.cpp > CMakeFiles/server.dir/src/skill.cpp.i
+
+CMakeFiles/server.dir/src/skill.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/server.dir/src/skill.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/czr/gameServer/src/skill.cpp -o CMakeFiles/server.dir/src/skill.cpp.s
+
+CMakeFiles/server.dir/src/skill.cpp.o.requires:
+
+.PHONY : CMakeFiles/server.dir/src/skill.cpp.o.requires
+
+CMakeFiles/server.dir/src/skill.cpp.o.provides: CMakeFiles/server.dir/src/skill.cpp.o.requires
+	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/src/skill.cpp.o.provides.build
+.PHONY : CMakeFiles/server.dir/src/skill.cpp.o.provides
+
+CMakeFiles/server.dir/src/skill.cpp.o.provides.build: CMakeFiles/server.dir/src/skill.cpp.o
+
+
 # Object files for target server
 server_OBJECTS = \
 "CMakeFiles/server.dir/main.cpp.o" \
@@ -258,7 +306,9 @@ server_OBJECTS = \
 "CMakeFiles/server.dir/src/http_request.cpp.o" \
 "CMakeFiles/server.dir/src/sql_pool.cpp.o" \
 "CMakeFiles/server.dir/src/room.cpp.o" \
-"CMakeFiles/server.dir/src/player.cpp.o"
+"CMakeFiles/server.dir/src/player.cpp.o" \
+"CMakeFiles/server.dir/src/battle.cpp.o" \
+"CMakeFiles/server.dir/src/skill.cpp.o"
 
 # External object files for target server
 server_EXTERNAL_OBJECTS =
@@ -271,11 +321,15 @@ server: CMakeFiles/server.dir/src/http_request.cpp.o
 server: CMakeFiles/server.dir/src/sql_pool.cpp.o
 server: CMakeFiles/server.dir/src/room.cpp.o
 server: CMakeFiles/server.dir/src/player.cpp.o
+server: CMakeFiles/server.dir/src/battle.cpp.o
+server: CMakeFiles/server.dir/src/skill.cpp.o
 server: CMakeFiles/server.dir/build.make
 server: /usr/lib/x86_64-linux-gnu/libprotobuf.so
 server: /home/czr/jsonc/jsoncpp/build/lib/libjsoncpp.a
+server: /usr/lib/x86_64-linux-gnu/libssl.so
+server: /usr/lib/x86_64-linux-gnu/libcrypto.so
 server: CMakeFiles/server.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/czr/gameServer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Linking CXX executable server"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/czr/gameServer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Linking CXX executable server"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/server.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -291,6 +345,8 @@ CMakeFiles/server.dir/requires: CMakeFiles/server.dir/src/http_request.cpp.o.req
 CMakeFiles/server.dir/requires: CMakeFiles/server.dir/src/sql_pool.cpp.o.requires
 CMakeFiles/server.dir/requires: CMakeFiles/server.dir/src/room.cpp.o.requires
 CMakeFiles/server.dir/requires: CMakeFiles/server.dir/src/player.cpp.o.requires
+CMakeFiles/server.dir/requires: CMakeFiles/server.dir/src/battle.cpp.o.requires
+CMakeFiles/server.dir/requires: CMakeFiles/server.dir/src/skill.cpp.o.requires
 
 .PHONY : CMakeFiles/server.dir/requires
 

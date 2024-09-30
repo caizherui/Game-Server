@@ -26,6 +26,9 @@ void Http_request::init() {
     write_idx = 0;
     bytes_to_send = 0;
     bytes_have_send = 0;
+    sseTag = false;
+    webTag = false;
+    bas64 = "";
 
 
     memset(read_buf, '\0', READ_BUF_SIZE);
@@ -59,8 +62,7 @@ bool Http_request::read() {
     return true;
 }
 
-bool Http_request::write()
-{
+bool Http_request::write() {
     // 发送 HTTP 响应
     ssize_t bytes_sent = send(fd, response_post.c_str(), response_post.size(), 0);
     if (bytes_sent == -1) {
@@ -251,17 +253,155 @@ void Http_request::process_read(MYSQL *mysql) {
         // } else {
         //     response_data = "false";
         // }
-    } else if (path == "batRes?") {    // 战斗结果
+    } else if (path == "readyBattle?") {    // 准备战斗 
         std::string query = url.substr(query_pos + 1);
         std::map<std::string, std::string> queryParams = parse_query_params(query);
 
         std::string id = queryParams["userId"];
 
-        if(Http::userRoomMap.find(id) != userRoomMap.end()) {
-            response_data = "true";
+        if(Room::roomLists[Http::userRoomMap[id]]->readyFlag) {
+            dataParse::Oppo oppo;
+
+            for (auto id : Room::roomLists[Http::userRoomMap[id]]->getOppoSkills(id)) {
+                oppo.add_skillids(id);
+            }
+            oppo.set_maxhealth(Room::roomLists[Http::userRoomMap[id]]->getOppoHealth(id));
+
+            std::cout << oppo.maxhealth() << std::endl;
+            if (oppo.SerializeToString(&response_data)) {
+                std::cout << "序列化成功" << std::endl;
+            } else {
+                std::cout << "序列化失败" << std::endl;
+            }
         } else {
-            response_data = "false";
+            response_data = "No Ready Battle";
         }
+    } else if (path == "battle") {    // 战斗阶段，服务器建立SSE连接
+        // std::string query = url.substr(query_pos + 1);
+        // std::map<std::string, std::string> queryParams = parse_query_params(query);
+
+        // std::string id = queryParams["userId"];
+        // 分割请求字符串，去除第一行（请求行）
+        size_t first_newline = request_post.find("Sec-WebSocket-Key: ");
+        std::string headers_part = request_post.substr(first_newline);
+        std::cout << headers_part << std::endl;
+        size_t colon_pos = headers_part.find(':');
+        std::string key = headers_part.substr(colon_pos + 2);
+        // 找到最后一个非空白字符的位置
+        size_t end = key.find_last_not_of(" \t\n\r\f\v");
+        key = key.substr(0, end+1);
+
+        key = key+"258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
+        std::cout << key << std::endl;
+        char* keyc = const_cast<char*>(key.c_str());
+
+        char WSkey[64];
+        memset(WSkey, 0, sizeof(WSkey));
+        memcpy(WSkey, keyc, strlen(keyc));
+        std::cout << WSkey << std::endl;
+
+        char SHA1_data[21];
+        memset(SHA1_data, 0, sizeof(SHA1_data));
+
+        SHA1((uchar*)&WSkey, strlen(WSkey), (uchar*)&SHA1_data);
+
+        // 将SHA-1散列值转换为十六进制字符串
+        // std::string ret;
+        // static const char *hex = "0123456789ABCDEF";
+        // for (int i = 0; i < 20; i++)
+        // {
+        //     ret.push_back(hex[(SHA1_data[i] >> 4) & 0xf]); //取二进制高四位
+        //     ret.push_back(hex[SHA1_data[i] & 0xf]);        //取二进制低四位
+        // }
+        // transform(ret.begin(),ret.end(),ret.begin(),::tolower);
+        // std::cout << "SHA1编码：" << ret << std::endl;
+        // // char Sec_Accept[32];
+
+        // //编码表
+        // const char EncodeTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+    
+        // //返回值
+        // size_t DataByte = ret.size();
+        // const char* Data = ret.data();
+        // strEncode;
+        // unsigned char Tmp[4] = { 0 };
+        // int LineLength = 0;
+        // for (int i = 0; i < (int)(DataByte / 3); i++)
+        // {
+        //     Tmp[1] = *Data++;
+        //     Tmp[2] = *Data++;
+        //     Tmp[3] = *Data++;
+        //     strEncode += EncodeTable[Tmp[1] >> 2];
+        //     strEncode += EncodeTable[((Tmp[1] << 4) | (Tmp[2] >> 4)) & 0x3F];
+        //     strEncode += EncodeTable[((Tmp[2] << 2) | (Tmp[3] >> 6)) & 0x3F];
+        //     strEncode += EncodeTable[Tmp[3] & 0x3F];
+        //     if (LineLength += 4, LineLength == 76) { strEncode += "\r\n"; LineLength = 0; }
+        // }
+    
+        // //对剩余数据进行编码
+        // int Mod = DataByte % 3;
+        // if (Mod == 1)
+        // {
+        //     Tmp[1] = *Data++;
+        //     strEncode += EncodeTable[(Tmp[1] & 0xFC) >> 2];
+        //     strEncode += EncodeTable[((Tmp[1] & 0x03) << 4)];
+        //     strEncode += "==";
+        // }
+        // else if (Mod == 2)
+        // {
+        //     Tmp[1] = *Data++;
+        //     Tmp[2] = *Data++;
+        //     strEncode += EncodeTable[(Tmp[1] & 0xFC) >> 2];
+        //     strEncode += EncodeTable[((Tmp[1] & 0x03) << 4) | ((Tmp[2] & 0xF0) >> 4)];
+        //     strEncode += EncodeTable[((Tmp[2] & 0x0F) << 2)];
+        //     strEncode += "=";
+        // }
+        char Sec_A[32];
+        BIO *b64, *bio;
+        BUF_MEM *bptr = NULL;
+        size_t size = 0;
+    
+        b64 = BIO_new(BIO_f_base64());
+        bio = BIO_new(BIO_s_mem());
+        bio = BIO_push(b64, bio);
+    
+        BIO_write(bio, SHA1_data, strlen(SHA1_data));
+        BIO_flush(bio);
+    
+        BIO_get_mem_ptr(bio, &bptr);
+        memcpy(Sec_A, bptr->data, bptr->length);
+        Sec_A[bptr->length] = '\0';
+        size = bptr->length;
+    
+        BIO_free_all(bio);
+        std::cout << "Base64编码：" << Sec_A << std::endl;
+        bas64 = Sec_A;
+        // bas64 = Sec_Accept;
+        // std::cout << "Base64编码：" << bas64 << std::endl;
+
+        webTag = true;
+
+
+        // unsigned char hash[SHA_DIGEST_LENGTH];
+        // SHA1_CTX sha1;
+        // SHA1_Init(&sha1);
+        // SHA1_Update(&sha1, key.c_str(), key.length());
+        // SHA1_Final(hash, &sha1);
+
+        // std::stringstream hexStream;
+        // hexStream << std::hex << std::setfill('0');
+        // for (size_t i = 0; i < SHA_DIGEST_LENGTH; ++i) {
+        //     hexStream << std::setw(2) << static_cast<int>(hash[i]);
+        // }
+        // key = hexStream.str();
+        // std::cout << key << std::endl;
+
+    
+
+        // Sse* sse = new Sse();
+        // std::thread sse_thread(sse->sse_client, (void *)sse, fd);
+        // sse_thread.detach();
+
     } else if (path == "updateState?") {    // 更新状态
         std::string query = url.substr(query_pos + 1);
         std::map<std::string, std::string> queryParams = parse_query_params(query);
@@ -284,20 +424,51 @@ void Http_request::process_read(MYSQL *mysql) {
         } else {
             response_data = "false";
         }
+    } else if (path == "sse?") {    // sse事件推送机制
+        std::string query = url.substr(query_pos + 1);
+        std::map<std::string, std::string> queryParams = parse_query_params(query);
+
+        std::string id = queryParams["userId"];
+
+        if(Http::userRoomMap.find(id) != userRoomMap.end()) {
+            response_data = "true";
+        } else {
+            response_data = "false";
+        }
     }
 
 }
 
 void Http_request::process_write() {
-    //  构建 HTTP 响应头
-    response_post =
-        "HTTP/1.1 200 OK\r\n"
-        "Server: CustomServer\r\n"
-        "Content-Length: " + std::to_string(response_data.size()) + "\r\n" // 计算响应体长度
-        "Content-Type: text/plain\r\n" // 设置 Content-Type 为 text/plain
-        "Connection: keep-alive\r\n" // 关闭连接
-        "\r\n"
-        + response_data; // 响应体内容
+    if (!webTag) {
+        //  构建 HTTP 响应头
+        response_post =
+            "HTTP/1.1 200 OK\r\n"
+            "Server: CustomServer\r\n"
+            "Content-Length: " + std::to_string(response_data.size()) + "\r\n" // 计算响应体长度
+            "Content-Type: text/plain\r\n" // 设置 Content-Type 为 text/plain
+            "Connection: keep-alive\r\n" // 关闭连接
+            "\r\n"
+            + response_data; // 响应体内容
+        
+        std::cout << "响应内容" << response_data << std::endl;
+        response_data = "";  //将响应字符串置空，为下次响应作准备
+    } else {
+        std::cout << "开始执行websocket" << std::endl;
+        //  构建 HTTP 响应头
+        response_post =
+            "HTTP/1.1 101 Switching Protocols\r\n" \
+                "Connection: Upgrade\r\n" \
+                "Server:beetle websocket server\r\n" \
+                "Upgrade: websocket\r\n" \
+                "Access-Control-Allow-Credentials:true\r\n" \
+                "Access-Control-Allow-Headers:content-type\r\n" \
+                "Sec-WebSocket-Accept:" + bas64 +"\r\n" \
+                "\r\n";
+
+        // memset(Sec_Accept, '\0', 32);
+        std::cout << response_post << std::endl;
+    }
     // 构建 HTTP 响应字符串
     // std::stringstream response_stream;
 

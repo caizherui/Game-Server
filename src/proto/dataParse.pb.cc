@@ -24,6 +24,9 @@ namespace {
 const ::google::protobuf::Descriptor* User_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   User_reflection_ = NULL;
+const ::google::protobuf::Descriptor* Oppo_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  Oppo_reflection_ = NULL;
 
 }  // namespace
 
@@ -51,6 +54,22 @@ void protobuf_AssignDesc_dataParse_2eproto() {
       sizeof(User),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(User, _internal_metadata_),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(User, _is_default_instance_));
+  Oppo_descriptor_ = file->message_type(1);
+  static const int Oppo_offsets_[2] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Oppo, skillids_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Oppo, maxhealth_),
+  };
+  Oppo_reflection_ =
+    ::google::protobuf::internal::GeneratedMessageReflection::NewGeneratedMessageReflection(
+      Oppo_descriptor_,
+      Oppo::default_instance_,
+      Oppo_offsets_,
+      -1,
+      -1,
+      -1,
+      sizeof(Oppo),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Oppo, _internal_metadata_),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Oppo, _is_default_instance_));
 }
 
 namespace {
@@ -66,6 +85,8 @@ void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
       User_descriptor_, &User::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+      Oppo_descriptor_, &Oppo::default_instance());
 }
 
 }  // namespace
@@ -73,6 +94,8 @@ void protobuf_RegisterTypes(const ::std::string&) {
 void protobuf_ShutdownFile_dataParse_2eproto() {
   delete User::default_instance_;
   delete User_reflection_;
+  delete Oppo::default_instance_;
+  delete Oppo_reflection_;
 }
 
 void protobuf_AddDesc_dataParse_2eproto() GOOGLE_ATTRIBUTE_COLD;
@@ -84,11 +107,14 @@ void protobuf_AddDesc_dataParse_2eproto() {
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n\017dataParse.proto\022\tdataParse\" \n\004User\022\n\n\002"
-    "id\030\001 \001(\t\022\014\n\004name\030\002 \001(\tb\006proto3", 70);
+    "id\030\001 \001(\t\022\014\n\004name\030\002 \001(\t\"+\n\004Oppo\022\020\n\010skillI"
+    "ds\030\001 \003(\005\022\021\n\tmaxHealth\030\002 \001(\005b\006proto3", 115);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "dataParse.proto", &protobuf_RegisterTypes);
   User::default_instance_ = new User();
+  Oppo::default_instance_ = new Oppo();
   User::default_instance_->InitAsDefaultInstance();
+  Oppo::default_instance_->InitAsDefaultInstance();
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_dataParse_2eproto);
 }
 
@@ -477,6 +503,337 @@ void User::clear_name() {
   }
   name_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), name);
   // @@protoc_insertion_point(field_set_allocated:dataParse.User.name)
+}
+
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int Oppo::kSkillIdsFieldNumber;
+const int Oppo::kMaxHealthFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+Oppo::Oppo()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:dataParse.Oppo)
+}
+
+void Oppo::InitAsDefaultInstance() {
+  _is_default_instance_ = true;
+}
+
+Oppo::Oppo(const Oppo& from)
+  : ::google::protobuf::Message(),
+    _internal_metadata_(NULL) {
+  SharedCtor();
+  MergeFrom(from);
+  // @@protoc_insertion_point(copy_constructor:dataParse.Oppo)
+}
+
+void Oppo::SharedCtor() {
+    _is_default_instance_ = false;
+  _cached_size_ = 0;
+  maxhealth_ = 0;
+}
+
+Oppo::~Oppo() {
+  // @@protoc_insertion_point(destructor:dataParse.Oppo)
+  SharedDtor();
+}
+
+void Oppo::SharedDtor() {
+  if (this != default_instance_) {
+  }
+}
+
+void Oppo::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* Oppo::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return Oppo_descriptor_;
+}
+
+const Oppo& Oppo::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_dataParse_2eproto();
+  return *default_instance_;
+}
+
+Oppo* Oppo::default_instance_ = NULL;
+
+Oppo* Oppo::New(::google::protobuf::Arena* arena) const {
+  Oppo* n = new Oppo;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void Oppo::Clear() {
+// @@protoc_insertion_point(message_clear_start:dataParse.Oppo)
+  maxhealth_ = 0;
+  skillids_.Clear();
+}
+
+bool Oppo::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:dataParse.Oppo)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // repeated int32 skillIds = 1;
+      case 1: {
+        if (tag == 10) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, this->mutable_skillids())));
+        } else if (tag == 8) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 1, 10, input, this->mutable_skillids())));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(16)) goto parse_maxHealth;
+        break;
+      }
+
+      // optional int32 maxHealth = 2;
+      case 2: {
+        if (tag == 16) {
+         parse_maxHealth:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &maxhealth_)));
+
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectAtEnd()) goto success;
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:dataParse.Oppo)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:dataParse.Oppo)
+  return false;
+#undef DO_
+}
+
+void Oppo::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:dataParse.Oppo)
+  // repeated int32 skillIds = 1;
+  if (this->skillids_size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteTag(1, ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED, output);
+    output->WriteVarint32(_skillids_cached_byte_size_);
+  }
+  for (int i = 0; i < this->skillids_size(); i++) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32NoTag(
+      this->skillids(i), output);
+  }
+
+  // optional int32 maxHealth = 2;
+  if (this->maxhealth() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(2, this->maxhealth(), output);
+  }
+
+  // @@protoc_insertion_point(serialize_end:dataParse.Oppo)
+}
+
+::google::protobuf::uint8* Oppo::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  // @@protoc_insertion_point(serialize_to_array_start:dataParse.Oppo)
+  // repeated int32 skillIds = 1;
+  if (this->skillids_size() > 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteTagToArray(
+      1,
+      ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED,
+      target);
+    target = ::google::protobuf::io::CodedOutputStream::WriteVarint32ToArray(
+      _skillids_cached_byte_size_, target);
+  }
+  for (int i = 0; i < this->skillids_size(); i++) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteInt32NoTagToArray(this->skillids(i), target);
+  }
+
+  // optional int32 maxHealth = 2;
+  if (this->maxhealth() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(2, this->maxhealth(), target);
+  }
+
+  // @@protoc_insertion_point(serialize_to_array_end:dataParse.Oppo)
+  return target;
+}
+
+int Oppo::ByteSize() const {
+// @@protoc_insertion_point(message_byte_size_start:dataParse.Oppo)
+  int total_size = 0;
+
+  // optional int32 maxHealth = 2;
+  if (this->maxhealth() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->maxhealth());
+  }
+
+  // repeated int32 skillIds = 1;
+  {
+    int data_size = 0;
+    for (int i = 0; i < this->skillids_size(); i++) {
+      data_size += ::google::protobuf::internal::WireFormatLite::
+        Int32Size(this->skillids(i));
+    }
+    if (data_size > 0) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(data_size);
+    }
+    GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+    _skillids_cached_byte_size_ = data_size;
+    GOOGLE_SAFE_CONCURRENT_WRITES_END();
+    total_size += data_size;
+  }
+
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void Oppo::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:dataParse.Oppo)
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
+  const Oppo* source = 
+      ::google::protobuf::internal::DynamicCastToGenerated<const Oppo>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:dataParse.Oppo)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:dataParse.Oppo)
+    MergeFrom(*source);
+  }
+}
+
+void Oppo::MergeFrom(const Oppo& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:dataParse.Oppo)
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
+  skillids_.MergeFrom(from.skillids_);
+  if (from.maxhealth() != 0) {
+    set_maxhealth(from.maxhealth());
+  }
+}
+
+void Oppo::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:dataParse.Oppo)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void Oppo::CopyFrom(const Oppo& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:dataParse.Oppo)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool Oppo::IsInitialized() const {
+
+  return true;
+}
+
+void Oppo::Swap(Oppo* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void Oppo::InternalSwap(Oppo* other) {
+  skillids_.UnsafeArenaSwap(&other->skillids_);
+  std::swap(maxhealth_, other->maxhealth_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  std::swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata Oppo::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = Oppo_descriptor_;
+  metadata.reflection = Oppo_reflection_;
+  return metadata;
+}
+
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// Oppo
+
+// repeated int32 skillIds = 1;
+int Oppo::skillids_size() const {
+  return skillids_.size();
+}
+void Oppo::clear_skillids() {
+  skillids_.Clear();
+}
+ ::google::protobuf::int32 Oppo::skillids(int index) const {
+  // @@protoc_insertion_point(field_get:dataParse.Oppo.skillIds)
+  return skillids_.Get(index);
+}
+ void Oppo::set_skillids(int index, ::google::protobuf::int32 value) {
+  skillids_.Set(index, value);
+  // @@protoc_insertion_point(field_set:dataParse.Oppo.skillIds)
+}
+ void Oppo::add_skillids(::google::protobuf::int32 value) {
+  skillids_.Add(value);
+  // @@protoc_insertion_point(field_add:dataParse.Oppo.skillIds)
+}
+ const ::google::protobuf::RepeatedField< ::google::protobuf::int32 >&
+Oppo::skillids() const {
+  // @@protoc_insertion_point(field_list:dataParse.Oppo.skillIds)
+  return skillids_;
+}
+ ::google::protobuf::RepeatedField< ::google::protobuf::int32 >*
+Oppo::mutable_skillids() {
+  // @@protoc_insertion_point(field_mutable_list:dataParse.Oppo.skillIds)
+  return &skillids_;
+}
+
+// optional int32 maxHealth = 2;
+void Oppo::clear_maxhealth() {
+  maxhealth_ = 0;
+}
+ ::google::protobuf::int32 Oppo::maxhealth() const {
+  // @@protoc_insertion_point(field_get:dataParse.Oppo.maxHealth)
+  return maxhealth_;
+}
+ void Oppo::set_maxhealth(::google::protobuf::int32 value) {
+  
+  maxhealth_ = value;
+  // @@protoc_insertion_point(field_set:dataParse.Oppo.maxHealth)
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS

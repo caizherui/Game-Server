@@ -7,8 +7,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_executable(server main.cpp
-src/proto/dataParse.pb.cc src/server.cpp src/epoll.cpp src/http_request.cpp src/sql_pool.cpp src/room.cpp src/player.cpp
-${TS_FILES}    
+src/proto/dataParse.pb.cc src/server.cpp src/epoll.cpp src/http_request.cpp src/sql_pool.cpp src/room.cpp src/player.cpp src/battle.cpp src/skill.cpp
 )
 
 INCLUDE_DIRECTORIES(./src ./src/proto)
@@ -30,7 +29,8 @@ find_library(JsonCpp_LIBRARIES
   HINTS ${JsonCpp_LIBRARY_DIR}
 )
 
+find_package(OpenSSL REQUIRED)
 
-include_directories(${PROTOBUF_INCLUDE_DIR}  ${JsonCpp_INCLUDE_DIRS})
+include_directories(${PROTOBUF_INCLUDE_DIR}  ${JsonCpp_INCLUDE_DIRS} ${OPENSSL_INCLUDE_DIR})
 
-target_link_libraries(server pthread mysqlcppconn mysqlclient ${PROTOBUF_LIBRARIES}  ${JsonCpp_LIBRARIES})
+target_link_libraries(server pthread mysqlcppconn mysqlclient ${PROTOBUF_LIBRARIES}  ${JsonCpp_LIBRARIES} ${OPENSSL_LIBRARIES})
