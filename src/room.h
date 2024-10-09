@@ -30,10 +30,11 @@ public:
     int readyNum = 0; //    已经准备就绪的用户
     int surNum = 0; //  存活用户总数，为1时游戏结束
     std::vector<std::shared_ptr<Player>> surviveList; //  存活用户列表
+    std::unordered_set<std::string> webReuse;   //  防止重复
+    int battleNum = 0; //   已经进入战斗的用户，若battleNum和readyNum数量相等，则将readyNum置为空 (说明SSE连接的数量，只有当连接数量达到readyNum数量时，才开启战斗)
 
 private:
     void disOppo(); //  房间内分配对手
-    int battleNum = 0; //   已经进入战斗的用户，若battleNum和readyNum数量相等，则将readyNum置为空 (说明SSE连接的数量，只有当连接数量达到readyNum数量时，才开启战斗)
     std::mutex mutexReady;   //  准备好的用户锁
     std::mutex mutexBattle;   //  准备好的用户锁
 

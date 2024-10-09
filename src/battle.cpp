@@ -9,7 +9,7 @@ void Battle::battle_ready(void* arg) {
 }
 
 void Battle::ready() {
-    std::cout << "进入战斗阶段" << std::endl;
+    std::cout << "进入战斗阶段" << p1->playerId << " " << p2->playerId << std::endl;
     for (auto &id:p1->skillIds) {
         Skill* s = nullptr;
         if (SkillPool::skillT[id]->getInfo() == 1)
@@ -64,9 +64,9 @@ void Battle::fight() {
                 std::cout << request_json << std::endl; 
                 if (it->exec(request_json) == 0) {
                     std::cout << "发送历练消息" << std::endl; 
-                    if (p1->playerId != "-1")
+                    if (p1->playerId != "65536")
                         sendWeb(Battle::webPlayer[p1->playerId], request_json);
-                    if (p2->playerId != "-1")  
+                    if (p2->playerId != "65536")  
                         sendWeb(Battle::webPlayer[p2->playerId], request_json); 
                     std::cout << "历练消息发送完毕" << std::endl; 
                     it->curCd = it->cd;
@@ -75,8 +75,7 @@ void Battle::fight() {
                     std::string pId = request_json.substr(pos+1);
                     pos = pId.find(' ');
                     pId = pId.substr(0, pos);
-                    std::cout << "用户1的历练值：" << p1->expNums << "用户2的历练值：" << p2->expNums << std::endl;
-                    if (pId != "-1") {
+                    if (pId != "65536") {
                         if (pId == p1->playerId && p1->expNums == 1) {
                             std::cout << Room::roomLists[Http::userRoomMap[p1->playerId]]->surviveList.size() << " " << pId << std::endl;
                             for (int i = 0; i < Room::roomLists[Http::userRoomMap[p1->playerId]]->surviveList.size(); i++) {
@@ -91,7 +90,6 @@ void Battle::fight() {
                         } else if(p2->expNums == 1){
                             std::cout << Room::roomLists[Http::userRoomMap[p1->playerId]]->surviveList.size() << " " << pId << std::endl;
                             for (int i = 0; i < Room::roomLists[Http::userRoomMap[p2->playerId]]->surviveList.size(); i++) {
-                                std::cout << Room::roomLists[Http::userRoomMap[p1->playerId]]->surviveList[i]->playerId << " " << pId << std::endl;
                                 if (Room::roomLists[Http::userRoomMap[p2->playerId]]->surviveList[i]->playerId == pId) {
                                     auto it = Room::roomLists[Http::userRoomMap[p2->playerId]]->surviveList.begin()+i;
                                     Room::roomLists[Http::userRoomMap[p2->playerId]]->surviveList.erase(it);
@@ -101,13 +99,13 @@ void Battle::fight() {
                             std::cout << "用户结束试炼" << std::endl;
                         }
                     }
-                    if (p1->playerId != "-1")
+                    if (p1->playerId != "65536")
                         sendWeb(Battle::webPlayer[p1->playerId], request_json);
-                    if (p2->playerId != "-1")
+                    if (p2->playerId != "65536")
                         sendWeb(Battle::webPlayer[p2->playerId], request_json);
-                    if (p1->playerId != "-1")
+                    if (p1->playerId != "65536")
                         closeWebSocketConnection(Battle::webPlayer[p1->playerId]);
-                    if (p2->playerId != "-1")
+                    if (p2->playerId != "65536")
                         closeWebSocketConnection(Battle::webPlayer[p2->playerId]);
                     std::cout << "历练结束，关闭websocket连接" << std::endl;
                     return;
@@ -129,7 +127,6 @@ void Battle::sendWeb(int fd, std::string message) {
 
     tFrameHeader* ptFrameHeader = new tFrameHeader();
     // 封装websocket数据帧
-    std::cout << "数据长度" << payloadLength << std::endl;
     
     char* pHead = NULL;
     ptFrameHeader->m_Opcode = 0x01;
@@ -176,7 +173,6 @@ void Battle::sendWeb(int fd, std::string message) {
     // memcpy(frameData + Length, payloadData, payloadLength);
     //  memset(frameData + Length + payloadLength, '\0', 1);
     // std::cout << frameData << std::endl;
-    std::cout << "拂晓之前" << fd << std::endl;
 
     memcpy(pHead+Length, payloadData, payloadLength);
     ssize_t se = send(fd, pHead, Length+payloadLength, 0);
@@ -188,8 +184,6 @@ void Battle::sendWeb(int fd, std::string message) {
 
     delete [] pHead;
     delete ptFrameHeader;
-
-    std::cout << "发送websocket请求" << std::endl;
 
     // websocket
     // ssize_t bytes_sent = send(fd, response_post.c_str(), response_post.size(), 0);

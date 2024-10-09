@@ -31,6 +31,7 @@ public:
     int health;
 
     void setInfo(std::list<int>&&, int, int); // 设置用户属性
+    void setSkills(std::list<int>&);
     inline void setSkills(std::list<int>&&); //  设置技能表
     inline void setHealth(int);    //  设置最大生命值
     inline void initState();    //  初始化对局状态

@@ -193,9 +193,9 @@ void Http_request::process_read(MYSQL *mysql) {
         std::unique_lock<std::mutex> lk(Http::mutexWait);
         std::unique_lock<std::mutex> lkR(Http::mutexRoom);
         Http::waitQueue.push(id);
-        if (Http::waitQueue.size() == 4) {
+        if (Http::waitQueue.size() == 5) {
             std::shared_ptr<Room> room = std::make_shared<Room>();
-            for (int i = 0; i < 4; i++) {
+            for (int i = 0; i < 5; i++) {
                 std::string tmp = Http::waitQueue.front();
                 Http::waitQueue.pop();
                 std::shared_ptr<Player> player = std::make_shared<Player>(tmp);
@@ -284,10 +284,17 @@ void Http_request::process_read(MYSQL *mysql) {
         std::map<std::string, std::string> queryParams = parse_query_params(query);
 
         std::string id = queryParams["userId"];
-        Room::roomLists[Http::userRoomMap[id]]->joinBattle();
+
+        std::cout << "战斗玩家数量" << Room::roomLists[Http::userRoomMap[id]]->battleNum << std::endl;
+        std::cout << "已统计玩家数量" << Room::roomLists[Http::userRoomMap[id]]->webReuse.size() << std::endl;
+
+        if  (Room::roomLists[Http::userRoomMap[id]]->webReuse.find(id) == Room::roomLists[Http::userRoomMap[id]]->webReuse.end()) {
+            Room::roomLists[Http::userRoomMap[id]]->webReuse.insert(id);
+            Room::roomLists[Http::userRoomMap[id]]->joinBattle();
+        }
+
         // 分割请求字符串，去除第一行（请求行）
         Battle::webPlayer[id] = fd;
-        std::cout << "文件描述符" << fd << std::endl;
         size_t first_newline = request_post.find("Sec-WebSocket-Key: ");
         std::string headers_part = request_post.substr(first_newline);
         std::cout << headers_part << std::endl;
