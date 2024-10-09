@@ -48,7 +48,6 @@ bool Http_request::read() {
         if (ret == -1) {
             if (errno == EAGAIN || errno == EWOULDBLOCK) {
                 std::cout << "处理结束" << std::endl;
-                std::cout << read_idx << std::endl;
                 std::cout << read_buf << std::endl;
                 break;
             }
@@ -63,17 +62,43 @@ bool Http_request::read() {
 }
 
 bool Http_request::write() {
-    // 发送 HTTP 响应
-    ssize_t bytes_sent = send(fd, response_post.c_str(), response_post.size(), 0);
-    if (bytes_sent == -1) {
-        std::cerr << "Error sending HTTP response: " << std::strerror(errno) << std::endl;
-    } else if (bytes_sent < static_cast<ssize_t>(response_post.size())) {
-        std::cerr << "Partial send: Sent " << bytes_sent << " out of " << response_post.size() << " bytes." << std::endl;
+    if (!webTag) {
+        // 发送 HTTP 响应
+        ssize_t bytes_sent = send(fd, response_post.c_str(), response_post.size(), 0);
+        if (bytes_sent == -1) {
+            std::cerr << "Error sending HTTP response: " << std::strerror(errno) << std::endl;
+        } else if (bytes_sent < static_cast<ssize_t>(response_post.size())) {
+            std::cerr << "Partial send: Sent " << bytes_sent << " out of " << response_post.size() << " bytes." << std::endl;
+        } else {
+            std::cout << "HTTP response sent successfully." << std::endl;
+        }
+        modfd(epollfd, fd, EPOLLIN);
+        init();
     } else {
-        std::cout << "HTTP response sent successfully." << std::endl;
+        // websocket
+        ssize_t bytes_sent = send(fd, response_post.c_str(), response_post.size(), 0);
+        if (bytes_sent == -1) {
+            std::cerr << "Error sending HTTP response: " << std::strerror(errno) << std::endl;
+        } else if (bytes_sent < static_cast<ssize_t>(response_post.size())) {
+            std::cerr << "Partial send: Sent " << bytes_sent << " out of " << response_post.size() << " bytes." << std::endl;
+        } else {
+            std::cout << "HTTP response sent successfully." << std::endl;
+        }
+
+        // char a[8];
+        // std::string 
+        // a[0] = 0x81;
+        // a[1] = 0x05;
+        // a[2] = 'H';
+        // a[3] = 'e';
+        // a[4] = 'L';
+        // a[5] = 'L';
+        // a[6] = 'O';
+        // a[7] = '\0';
+        // send(fd, a, 8, 0);
+        // modfd(epollfd, fd, EPOLLIN);
+        // init();
     }
-    modfd(epollfd, fd, EPOLLIN);
-    init();
 }
 
 void Http_request::process(MYSQL* mysql) {
@@ -111,6 +136,7 @@ void Http_request::process_read(MYSQL *mysql) {
     std::string request_line = request_post.substr(0, first_newline);
     std::regex request_pattern(R"(^(GET|POST)\s+([^ \r\n]+)\s+HTTP/(\d\.\d)$)");
     std::smatch request_match;
+    std::cout << "请求行部分：" << request_line << std::endl;
 
     if (std::regex_search(request_line, request_match, request_pattern)) {
         method = request_match[1];
@@ -121,15 +147,6 @@ void Http_request::process_read(MYSQL *mysql) {
         std::cout << "Version: " << version << std::endl;
     } else {
         std::cout << "Invalid request line format." << std::endl;
-    }
-
-    std::string request_json;
-
-    if (method == "POST") {
-        // 提取请求体部分
-        std::string headers_end = "\r\n\r\n";
-        size_t headers_end_pos = request_post.find(headers_end);
-        request_json = request_post.substr(headers_end_pos + headers_end.length(), request_post.size()-headers_end_pos + headers_end.length());
     }
 
     //  解析查询参数
@@ -176,12 +193,12 @@ void Http_request::process_read(MYSQL *mysql) {
         std::unique_lock<std::mutex> lk(Http::mutexWait);
         std::unique_lock<std::mutex> lkR(Http::mutexRoom);
         Http::waitQueue.push(id);
-        if (Http::waitQueue.size() == 2) {
-            Room* room = new Room();
-            for (int i = 0; i < 2; i++) {
+        if (Http::waitQueue.size() == 4) {
+            std::shared_ptr<Room> room = std::make_shared<Room>();
+            for (int i = 0; i < 4; i++) {
                 std::string tmp = Http::waitQueue.front();
                 Http::waitQueue.pop();
-                Player* player = new Player(tmp);
+                std::shared_ptr<Player> player = std::make_shared<Player>(tmp);
                 room->add(player);
                 Http::userRoomMap[tmp] = Http::roomId;
             }
@@ -211,77 +228,66 @@ void Http_request::process_read(MYSQL *mysql) {
         std::map<std::string, std::string> queryParams = parse_query_params(query);
 
         std::string userId = queryParams["userId"];
+        std::string skillIds = queryParams["skillIds"];
+        int maxHealth = atoi(queryParams["maxHealth"].c_str());
+        int expNums = atoi(queryParams["expNums"].c_str());
 
-        // 解析 JSON 字符串
-        Json::Value root;
-        Json::Reader reader;
-        bool parsingSuccessful = reader.parse(request_json, root);
-
-        if (!parsingSuccessful) {
-            std::cout << "Failed to parse JSON." << std::endl;
+        std::list<int> skills;
+        int si = skillIds.size()/5;
+        std::cout << "传入的技能" << skillIds << std::endl;
+        for (int i = 0; i < si; i++) {
+            skills.push_back(atoi(skillIds.substr(i*5, 4).c_str()));
+            std::cout << atoi(skillIds.substr(i*5, 4).c_str()) << std::endl;
         }
 
-        // 提取数据
-        const Json::Value& skillIDsValue = root["skillIDs"];
-        int level = root["level"].asInt();
-        int maxHealth = root["maxHealth"].asInt();
-        int expNums = root["expNums"].asInt();
-        int gold = root["gold"].asInt();
-
-        std::list<int> skillIds;
-        // 输出数据
-        std::cout << "Skill IDs: ";
-        for (const auto& id : skillIDsValue) {
-            skillIds.push_back(id.asInt());
-        }
-
-        std::cout << "Level: " << level << std::endl;
-        std::cout << "Max Health: " << maxHealth << std::endl;
-        std::cout << "Experience Numbers: " << expNums << std::endl;
-        std::cout << "Gold: " << gold << std::endl;
-
-        Room::roomLists[Http::userRoomMap[userId]]->updatePlayer(userId, std::move(skillIds), maxHealth, expNums);
-        // Room::roomLists[Http::userRoomMap[userId]]->playerMap[userId]->setInfo(std::move(skillIds), maxHealth);
-
-        // std::string query = url.substr(query_pos + 1);
-        // std::map<std::string, std::string> queryParams = parse_query_params(query);
-
-        // std::string id = queryParams["userid"];
-
-        // if(Http::userRoomMap.find(id) != userRoomMap.end()) {
-        //     response_data = "true";
-        // } else {
-        //     response_data = "false";
-        // }
+        Room::roomLists[Http::userRoomMap[userId]]->updatePlayer(userId, std::move(skills), maxHealth, expNums);
+        std::cout << "存活用户人数" << Room::roomLists[Http::userRoomMap[userId]]->surviveList.size() << std::endl;
     } else if (path == "readyBattle?") {    // 准备战斗 
         std::string query = url.substr(query_pos + 1);
         std::map<std::string, std::string> queryParams = parse_query_params(query);
 
         std::string id = queryParams["userId"];
 
-        if(Room::roomLists[Http::userRoomMap[id]]->readyFlag) {
-            dataParse::Oppo oppo;
+        std::cout << "准备好的用户人数:" << Room::roomLists[Http::userRoomMap[id]]->readyNum << std::endl;
+        std::cout << "存活用户人数:" << Room::roomLists[Http::userRoomMap[id]]->surviveList.size() << std::endl;
 
-            for (auto id : Room::roomLists[Http::userRoomMap[id]]->getOppoSkills(id)) {
-                oppo.add_skillids(id);
-            }
-            oppo.set_maxhealth(Room::roomLists[Http::userRoomMap[id]]->getOppoHealth(id));
-
-            std::cout << oppo.maxhealth() << std::endl;
-            if (oppo.SerializeToString(&response_data)) {
-                std::cout << "序列化成功" << std::endl;
-            } else {
-                std::cout << "序列化失败" << std::endl;
-            }
+        if (Room::roomLists[Http::userRoomMap[id]]->surviveList.size() == 1) {  //  胜利结算
+            response_data = "you are win";
         } else {
-            response_data = "No Ready Battle";
-        }
-    } else if (path == "battle") {    // 战斗阶段，服务器建立SSE连接
-        // std::string query = url.substr(query_pos + 1);
-        // std::map<std::string, std::string> queryParams = parse_query_params(query);
+            if(Room::roomLists[Http::userRoomMap[id]]->readyFlag) {
+                Json::Value root;
+                Json::Value com;
+                Json::FastWriter writer;
 
-        // std::string id = queryParams["userId"];
+                // 创建一个 JSON 数组来存储技能ID
+                Json::Value skillsArray(Json::arrayValue);
+
+                std::cout << "存活用户人数" << Room::roomLists[Http::userRoomMap[id]]->surviveList.size() << std::endl;
+                // 向 skillsArray 中添加技能ID
+                for (auto id : Room::roomLists[Http::userRoomMap[id]]->getOppoSkills(id)) {
+                    std::cout << id << std::endl;
+                    skillsArray.append(id);
+                }
+                std::cout << "对手技能填充完毕" << std::endl;  
+                std::cout << Room::roomLists[Http::userRoomMap[id]]->getOppoHealth(id) << std::endl;
+                com["maxHealth"] = Room::roomLists[Http::userRoomMap[id]]->getOppoHealth(id);
+                com["skillIDs"] = skillsArray;
+                root.append(com);
+
+                response_data = writer.write(root);
+            } else {
+                response_data = "No Ready Battle";
+            }
+        }
+    } else if (path == "battle?") {    // 战斗阶段，服务器建立SSE连接
+        std::string query = url.substr(query_pos + 1);
+        std::map<std::string, std::string> queryParams = parse_query_params(query);
+
+        std::string id = queryParams["userId"];
+        Room::roomLists[Http::userRoomMap[id]]->joinBattle();
         // 分割请求字符串，去除第一行（请求行）
+        Battle::webPlayer[id] = fd;
+        std::cout << "文件描述符" << fd << std::endl;
         size_t first_newline = request_post.find("Sec-WebSocket-Key: ");
         std::string headers_part = request_post.substr(first_newline);
         std::cout << headers_part << std::endl;
@@ -304,58 +310,6 @@ void Http_request::process_read(MYSQL *mysql) {
         memset(SHA1_data, 0, sizeof(SHA1_data));
 
         SHA1((uchar*)&WSkey, strlen(WSkey), (uchar*)&SHA1_data);
-
-        // 将SHA-1散列值转换为十六进制字符串
-        // std::string ret;
-        // static const char *hex = "0123456789ABCDEF";
-        // for (int i = 0; i < 20; i++)
-        // {
-        //     ret.push_back(hex[(SHA1_data[i] >> 4) & 0xf]); //取二进制高四位
-        //     ret.push_back(hex[SHA1_data[i] & 0xf]);        //取二进制低四位
-        // }
-        // transform(ret.begin(),ret.end(),ret.begin(),::tolower);
-        // std::cout << "SHA1编码：" << ret << std::endl;
-        // // char Sec_Accept[32];
-
-        // //编码表
-        // const char EncodeTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-    
-        // //返回值
-        // size_t DataByte = ret.size();
-        // const char* Data = ret.data();
-        // strEncode;
-        // unsigned char Tmp[4] = { 0 };
-        // int LineLength = 0;
-        // for (int i = 0; i < (int)(DataByte / 3); i++)
-        // {
-        //     Tmp[1] = *Data++;
-        //     Tmp[2] = *Data++;
-        //     Tmp[3] = *Data++;
-        //     strEncode += EncodeTable[Tmp[1] >> 2];
-        //     strEncode += EncodeTable[((Tmp[1] << 4) | (Tmp[2] >> 4)) & 0x3F];
-        //     strEncode += EncodeTable[((Tmp[2] << 2) | (Tmp[3] >> 6)) & 0x3F];
-        //     strEncode += EncodeTable[Tmp[3] & 0x3F];
-        //     if (LineLength += 4, LineLength == 76) { strEncode += "\r\n"; LineLength = 0; }
-        // }
-    
-        // //对剩余数据进行编码
-        // int Mod = DataByte % 3;
-        // if (Mod == 1)
-        // {
-        //     Tmp[1] = *Data++;
-        //     strEncode += EncodeTable[(Tmp[1] & 0xFC) >> 2];
-        //     strEncode += EncodeTable[((Tmp[1] & 0x03) << 4)];
-        //     strEncode += "==";
-        // }
-        // else if (Mod == 2)
-        // {
-        //     Tmp[1] = *Data++;
-        //     Tmp[2] = *Data++;
-        //     strEncode += EncodeTable[(Tmp[1] & 0xFC) >> 2];
-        //     strEncode += EncodeTable[((Tmp[1] & 0x03) << 4) | ((Tmp[2] & 0xF0) >> 4)];
-        //     strEncode += EncodeTable[((Tmp[2] & 0x0F) << 2)];
-        //     strEncode += "=";
-        // }
         char Sec_A[32];
         BIO *b64, *bio;
         BUF_MEM *bptr = NULL;

@@ -6,7 +6,8 @@ std::mutex Http::mutexWait;
 int Http::roomId = 0;
 std::mutex Http::mutexRoom;
 std::unordered_map<std::string, int> Http::userRoomMap;  // 用户和房间之间的关系
-std::vector<Room *> Room::roomLists;
+std::vector<std::shared_ptr<Room>> Room::roomLists;
+std::unordered_map<std::string, int> Battle::webPlayer;  // 用户和房间之间的关系
 
 Server::Server() {
     epoll = new Epoll();
@@ -15,7 +16,7 @@ Server::Server() {
     for (int i = 0; i < MAX_FD; i++) {
         https[i] = new Http_request();
     }
-    pool = new ThreadPool<Http>(4);
+    pool = new ThreadPool<Http>(8);
 }
 
 Server::~Server() {
@@ -78,7 +79,6 @@ void Server::eventLoop() {
         for (auto &it: Http::users) {
             std::cout << it << std::endl;
         }
-        std::cout << "开始监听事件" << std::endl;
 
         // 监听event内核事件表
         int num = epoll_wait(epoll->epollfd, epoll->events, MAX_EVENT_NUM, -1);
@@ -99,6 +99,7 @@ void Server::eventLoop() {
                     https[connfd]->init(connfd, client_address);
                 }
             } else if (epoll->events[i].events & EPOLLIN) { // http请求 模拟proactor
+                std::cout << "http请求加入" << std::endl;
                 if (https[sockfd]->read()) {
                     pool->append(https[sockfd]);
                 }

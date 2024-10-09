@@ -27,9 +27,23 @@ CMakeFiles/server.dir/main.cpp.o: /home/czr/jsonc/jsoncpp/include/json/writer.h
 
 CMakeFiles/server.dir/src/battle.cpp.o: ../src/battle.cpp
 CMakeFiles/server.dir/src/battle.cpp.o: ../src/battle.h
+CMakeFiles/server.dir/src/battle.cpp.o: ../src/epoll.h
+CMakeFiles/server.dir/src/battle.cpp.o: ../src/http.h
 CMakeFiles/server.dir/src/battle.cpp.o: ../src/player.h
+CMakeFiles/server.dir/src/battle.cpp.o: ../src/proto/dataParse.pb.h
+CMakeFiles/server.dir/src/battle.cpp.o: ../src/room.h
 CMakeFiles/server.dir/src/battle.cpp.o: ../src/skill.h
 CMakeFiles/server.dir/src/battle.cpp.o: ../src/skillPool.h
+CMakeFiles/server.dir/src/battle.cpp.o: ../src/sql_pool.h
+CMakeFiles/server.dir/src/battle.cpp.o: /home/czr/jsonc/jsoncpp/include/json/allocator.h
+CMakeFiles/server.dir/src/battle.cpp.o: /home/czr/jsonc/jsoncpp/include/json/config.h
+CMakeFiles/server.dir/src/battle.cpp.o: /home/czr/jsonc/jsoncpp/include/json/forwards.h
+CMakeFiles/server.dir/src/battle.cpp.o: /home/czr/jsonc/jsoncpp/include/json/json.h
+CMakeFiles/server.dir/src/battle.cpp.o: /home/czr/jsonc/jsoncpp/include/json/json_features.h
+CMakeFiles/server.dir/src/battle.cpp.o: /home/czr/jsonc/jsoncpp/include/json/reader.h
+CMakeFiles/server.dir/src/battle.cpp.o: /home/czr/jsonc/jsoncpp/include/json/value.h
+CMakeFiles/server.dir/src/battle.cpp.o: /home/czr/jsonc/jsoncpp/include/json/version.h
+CMakeFiles/server.dir/src/battle.cpp.o: /home/czr/jsonc/jsoncpp/include/json/writer.h
 
 CMakeFiles/server.dir/src/epoll.cpp.o: ../src/epoll.cpp
 CMakeFiles/server.dir/src/epoll.cpp.o: ../src/epoll.h
@@ -62,11 +76,24 @@ CMakeFiles/server.dir/src/proto/dataParse.pb.cc.o: ../src/proto/dataParse.pb.cc
 CMakeFiles/server.dir/src/proto/dataParse.pb.cc.o: ../src/proto/dataParse.pb.h
 
 CMakeFiles/server.dir/src/room.cpp.o: ../src/battle.h
+CMakeFiles/server.dir/src/room.cpp.o: ../src/epoll.h
+CMakeFiles/server.dir/src/room.cpp.o: ../src/http.h
 CMakeFiles/server.dir/src/room.cpp.o: ../src/player.h
+CMakeFiles/server.dir/src/room.cpp.o: ../src/proto/dataParse.pb.h
 CMakeFiles/server.dir/src/room.cpp.o: ../src/room.cpp
 CMakeFiles/server.dir/src/room.cpp.o: ../src/room.h
 CMakeFiles/server.dir/src/room.cpp.o: ../src/skill.h
 CMakeFiles/server.dir/src/room.cpp.o: ../src/skillPool.h
+CMakeFiles/server.dir/src/room.cpp.o: ../src/sql_pool.h
+CMakeFiles/server.dir/src/room.cpp.o: /home/czr/jsonc/jsoncpp/include/json/allocator.h
+CMakeFiles/server.dir/src/room.cpp.o: /home/czr/jsonc/jsoncpp/include/json/config.h
+CMakeFiles/server.dir/src/room.cpp.o: /home/czr/jsonc/jsoncpp/include/json/forwards.h
+CMakeFiles/server.dir/src/room.cpp.o: /home/czr/jsonc/jsoncpp/include/json/json.h
+CMakeFiles/server.dir/src/room.cpp.o: /home/czr/jsonc/jsoncpp/include/json/json_features.h
+CMakeFiles/server.dir/src/room.cpp.o: /home/czr/jsonc/jsoncpp/include/json/reader.h
+CMakeFiles/server.dir/src/room.cpp.o: /home/czr/jsonc/jsoncpp/include/json/value.h
+CMakeFiles/server.dir/src/room.cpp.o: /home/czr/jsonc/jsoncpp/include/json/version.h
+CMakeFiles/server.dir/src/room.cpp.o: /home/czr/jsonc/jsoncpp/include/json/writer.h
 
 CMakeFiles/server.dir/src/server.cpp.o: ../src/battle.h
 CMakeFiles/server.dir/src/server.cpp.o: ../src/epoll.h
@@ -95,6 +122,15 @@ CMakeFiles/server.dir/src/server.cpp.o: /home/czr/jsonc/jsoncpp/include/json/wri
 CMakeFiles/server.dir/src/skill.cpp.o: ../src/player.h
 CMakeFiles/server.dir/src/skill.cpp.o: ../src/skill.cpp
 CMakeFiles/server.dir/src/skill.cpp.o: ../src/skill.h
+CMakeFiles/server.dir/src/skill.cpp.o: /home/czr/jsonc/jsoncpp/include/json/allocator.h
+CMakeFiles/server.dir/src/skill.cpp.o: /home/czr/jsonc/jsoncpp/include/json/config.h
+CMakeFiles/server.dir/src/skill.cpp.o: /home/czr/jsonc/jsoncpp/include/json/forwards.h
+CMakeFiles/server.dir/src/skill.cpp.o: /home/czr/jsonc/jsoncpp/include/json/json.h
+CMakeFiles/server.dir/src/skill.cpp.o: /home/czr/jsonc/jsoncpp/include/json/json_features.h
+CMakeFiles/server.dir/src/skill.cpp.o: /home/czr/jsonc/jsoncpp/include/json/reader.h
+CMakeFiles/server.dir/src/skill.cpp.o: /home/czr/jsonc/jsoncpp/include/json/value.h
+CMakeFiles/server.dir/src/skill.cpp.o: /home/czr/jsonc/jsoncpp/include/json/version.h
+CMakeFiles/server.dir/src/skill.cpp.o: /home/czr/jsonc/jsoncpp/include/json/writer.h
 
 CMakeFiles/server.dir/src/sql_pool.cpp.o: ../src/sql_pool.cpp
 CMakeFiles/server.dir/src/sql_pool.cpp.o: ../src/sql_pool.h

@@ -30,11 +30,17 @@ public:
     int oMaxHealth; 
     int health;
 
-    void setInfo(std::list<int>&&, int); // 设置用户属性
+    void setInfo(std::list<int>&&, int, int); // 设置用户属性
     inline void setSkills(std::list<int>&&); //  设置技能表
     inline void setHealth(int);    //  设置最大生命值
+    inline void initState();    //  初始化对局状态
     // Player oppo;    //  对局对手
 
+    // 对局中的状态
+    int sand;
+    int firm;
+    int sD;
+    int sS;
     
     
 };

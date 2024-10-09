@@ -5,6 +5,7 @@ project(serverAu)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fstack-protector-all")
 
 add_executable(server main.cpp
 src/proto/dataParse.pb.cc src/server.cpp src/epoll.cpp src/http_request.cpp src/sql_pool.cpp src/room.cpp src/player.cpp src/battle.cpp src/skill.cpp
