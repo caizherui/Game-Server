@@ -19,6 +19,10 @@ void Player::setSkills(std::list<int> &l) {
     skillIds = l;
 }
 
+void Player::setExp(int exp) {
+    expNums = exp;
+}
+
 void Player::setSkills(std::list<int> &&l) {
     skillIds = std::move(l);
 }

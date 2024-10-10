@@ -22,6 +22,7 @@ int AtkSkill::exec(std::string& message) {
     if (target->health <= 0) {
         target->rest();
         message = "gameEnd " + target->playerId + " end";
+        std::cout << message << std::endl;
         return 1;
     }
     return 0;

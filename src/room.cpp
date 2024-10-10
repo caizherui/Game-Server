@@ -76,6 +76,7 @@ void Room::disOppo() {  //  房间内分配对手
 }
 
 void Room::updatePlayer(std::string userId, std::list<int>&& skillIds, int maxHealth, int expNums) {
+    readyFlag = false;
     // if (expNums == 0) {
     //     for (auto it = surviveList.begin(); it != surviveList.end(); it++) {
     //         std::cout << "执行删除用户操作" << std::endl;
@@ -129,7 +130,6 @@ int Room::getOppoHealth(std::string userId) {
 void Room::joinBattle() {
     std::unique_lock<std::mutex> lk(mutexBattle);
     battleNum++;
-    lk.unlock();
     if (battleNum == readyNum) {
         std::cout << "全员集结，历练开始" << std::endl;
         int i = 0;
@@ -154,6 +154,7 @@ void Room::joinBattle() {
             std::shared_ptr<Player> mirror = std::make_shared<Player>("65536");
             mirror->setSkills(surviveList[0]->skillIds);
             mirror->setHealth(surviveList[0]->maxHealth);
+            mirror->setExp(2);
             Battle* bat= new Battle(surviveList[i], mirror);
             std::thread battle_thread(bat->battle_ready, (void *)bat);
             battle_thread.detach();
@@ -161,8 +162,8 @@ void Room::joinBattle() {
         webReuse.clear();
         readyNum = 0;
         battleNum = 0;
-        readyFlag = false;
     }
+    lk.unlock();
 }
 
 void Room::test() {

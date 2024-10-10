@@ -193,9 +193,9 @@ void Http_request::process_read(MYSQL *mysql) {
         std::unique_lock<std::mutex> lk(Http::mutexWait);
         std::unique_lock<std::mutex> lkR(Http::mutexRoom);
         Http::waitQueue.push(id);
-        if (Http::waitQueue.size() == 5) {
+        if (Http::waitQueue.size() == 3) {
             std::shared_ptr<Room> room = std::make_shared<Room>();
-            for (int i = 0; i < 5; i++) {
+            for (int i = 0; i < 3; i++) {
                 std::string tmp = Http::waitQueue.front();
                 Http::waitQueue.pop();
                 std::shared_ptr<Player> player = std::make_shared<Player>(tmp);

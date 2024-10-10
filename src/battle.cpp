@@ -71,6 +71,7 @@ void Battle::fight() {
                     std::cout << "历练消息发送完毕" << std::endl; 
                     it->curCd = it->cd;
                 } else{
+                    Room::roomLists[Http::userRoomMap[p1->playerId]]->readyFlag = false;
                     int pos = request_json.find(' ');
                     std::string pId = request_json.substr(pos+1);
                     pos = pId.find(' ');
@@ -90,6 +91,7 @@ void Battle::fight() {
                         } else if(p2->expNums == 1){
                             std::cout << Room::roomLists[Http::userRoomMap[p1->playerId]]->surviveList.size() << " " << pId << std::endl;
                             for (int i = 0; i < Room::roomLists[Http::userRoomMap[p2->playerId]]->surviveList.size(); i++) {
+                                std::cout << Room::roomLists[Http::userRoomMap[p1->playerId]]->surviveList[i]->playerId << " " << pId << std::endl;
                                 if (Room::roomLists[Http::userRoomMap[p2->playerId]]->surviveList[i]->playerId == pId) {
                                     auto it = Room::roomLists[Http::userRoomMap[p2->playerId]]->surviveList.begin()+i;
                                     Room::roomLists[Http::userRoomMap[p2->playerId]]->surviveList.erase(it);
